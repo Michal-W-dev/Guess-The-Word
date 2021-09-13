@@ -15,13 +15,22 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import FaceIcon from '@material-ui/icons/Face';
 import ScoreHistoryIcon from '@material-ui/icons/FolderOpenOutlined';
-import Looks6OutlinedIcon from '@material-ui/icons/Looks6Outlined';
+import Icon7 from '@material-ui/icons/Filter7Outlined';
+import Icon6 from '@material-ui/icons/Looks6Outlined';
+import Icon5 from '@material-ui/icons/Looks5Outlined';
+import Icon4 from '@material-ui/icons/Looks4Outlined';
+import Icon3 from '@material-ui/icons/Looks3Outlined';
+import Icon2 from '@material-ui/icons/LooksTwoOutlined';
+import Icon1 from '@material-ui/icons/LooksOneOutlined';
+import Form from './Form'
+
 
 const drawerWidth = 240;
 
 const styles = theme => ({
     root: {
         display: 'flex',
+        overflow: 'hidden'
     },
     appBar: {
         zIndex: theme.zIndex.drawer + 1,
@@ -109,13 +118,38 @@ const styles = theme => ({
 const MainDrawer = ({ classes, children }) => {
     const theme = useTheme();
     const [open, setOpen] = useState(false);
+    const [name, setName] = useState('Mike');
+    const [difficult, setDifficult] = useState(4);
+
+    const [showForm, setShowForm] = useState({ show: false, tabIndex: 2 })
 
     const handleDrawerOpen = () => setOpen(true);
-
     const handleDrawerClose = () => setOpen(false);
+
+
+    const handleShowingForm = ({ show = false, tabIndex }) => setShowForm({ show, tabIndex })
+    const changeDifficulytLevel = (level) => setDifficult(level)
+
+    const handleNameChange = (name) => setName(name)
+
+
+    const renderNumber = () => (
+        (difficult === 7) ? <Icon7 />
+            : (difficult === 6) ? <Icon6 />
+                : (difficult === 5) ? <Icon5 />
+                    : (difficult === 4) ? <Icon4 />
+                        : (difficult === 3) ? <Icon3 />
+                            : (difficult === 2) ? <Icon2 /> : <Icon1 />
+    )
 
     return (
         <div className={classes.root}>
+            <Form
+                showForm={showForm}
+                changeDifficulty={changeDifficulytLevel}
+                changeName={handleNameChange}
+                closeForm={handleShowingForm}
+            />
             <AppBar
                 position="fixed"
                 className={clsx(classes.appBar, open && classes.appBarShift)}
@@ -130,7 +164,7 @@ const MainDrawer = ({ classes, children }) => {
                     >
                         <MenuIcon />
                     </IconButton>
-                    <p style={{ fontSize: '30px' }}> Player: <span style={{ fontWeight: '400' }}>Mike</span> </p>
+                    <p style={{ fontSize: '30px' }}> Player: <span style={{ fontWeight: '400' }}>{name}</span> </p>
                 </Toolbar>
             </AppBar>
             <Drawer
@@ -153,12 +187,14 @@ const MainDrawer = ({ classes, children }) => {
                 </div>
                 <Divider className={classes.divider} />
                 <List >
-                    <ListItem button className={classes.listItem}>
+                    <ListItem button className={classes.listItem} onClick={() => handleShowingForm({ show: true, tabIndex: 0 })}>
                         <ListItemIcon><FaceIcon /></ListItemIcon>
                         <ListItemText primary='Player name' />
                     </ListItem>
-                    <ListItem button className={classes.listItem}>
-                        <ListItemIcon><Looks6OutlinedIcon /></ListItemIcon>
+                    <ListItem button className={classes.listItem} onClick={() => handleShowingForm({ show: true, tabIndex: 1 })}>
+                        <ListItemIcon>
+                            {renderNumber()}
+                        </ListItemIcon>
                         <ListItemText primary='Difficulty' />
                     </ListItem>
 

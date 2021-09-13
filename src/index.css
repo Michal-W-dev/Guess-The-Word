@@ -16,9 +16,22 @@ body {
   -moz-osx-font-smoothing: grayscale;
   box-sizing: border-box;
   font-weight: 100;
+  overflow-x: hidden;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+
+@keyframes slide {
+  0% {
+    margin: 0 -40%;
+    opacity: 0
+  }
+  100% {
+    margin: 0;
+    opacity: 1
+  }
 }
