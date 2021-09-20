@@ -1,18 +1,23 @@
 import React from 'react'
 import { withStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
+import sizes from '../styles/sizes'
 
 const styles = {
     root: {
+        textAlign: 'center',
+        // border: '1px solid black',
+        maxWidth: '75rem',
+        marginTop: '2.5rem',
         '& br': {
-            '@media (max-width: 800px)': { display: 'none' },
+            [sizes.down('xs')]: { display: 'none' },
         }
     },
     button: {
         fontSize: '2.2rem',
-        padding: '10px 20px',
-        width: '6rem',
-        height: '5rem',
+        // padding: '10px 20px',
+        width: '5.6rem',
+        height: '4.6rem',
         backgroundColor: '#3f51b5',
         color: 'white',
         borderRadius: '12%',
@@ -21,15 +26,20 @@ const styles = {
         margin: '3px',
         transform: 'skew(-10deg) rotate(-3deg)',
         // boxShadow: '0 0 0.5rem rgba(0, 0, 0, 0.3)',
-        boxShadow: '1px 1px 1px aqua, 0 0 1px 1px rgba(255,255,255,.9)',
+        boxShadow: '1px 1px 1px aqua, 0 0 1px 1px rgba(255,255,255,.9), 2px 2px 2px 2px black',
         cursor: 'pointer',
         transition: '1s cubic-bezier(0.34, 1.56, 0.64, 1)',
+        [sizes.down('md')]: {
+            width: '4.5rem', height: '3.5rem'
+        },
         '&.btn-fj::after': {
             content: '""',
             display: 'block',
             height: '1px',
-            width: '100%',
+            width: '2rem',
             backgroundColor: 'white',
+            margin: '0 auto',
+            [sizes.down('xs')]: { display: 'none' },
         },
         '&:disabled': {
             background: 'rgba(0,0,0,.1)'
@@ -93,7 +103,7 @@ const Buttons = ({ guessed, handleGuess, classes, answer, isWinner }) => {
 
 
 
-    console.log('isWinner', isWinner)
+    // console.log('isWinner', isWinner)
     const renderAnswerWord = () => {
         return (
             <div className={classes.answer}>
@@ -104,7 +114,7 @@ const Buttons = ({ guessed, handleGuess, classes, answer, isWinner }) => {
                         onClick={handleAnswerClick}
                         style={{
                             // animation: `slide ${(idx + 0.4) * 0.7}s forwards cubic-bezier(0.34, 1.56, 0.64, 1)`,
-                            animation: `slide ${(idx + 2) * 0.4}s forwards cubic-bezier(0.34, 1.56, 0.64, 1)`,
+                            animation: `slide ${(idx + 22) * 0.4}s forwards cubic-bezier(0.34, 1.56, 0.64, 1)`,
                             // transform: `skew(-40deg) rotateY(50deg) rotateX(30deg) scale(${(idx + sizeOfButtons()) * 0.2}`,
                             transform: `skew(-40deg) rotateY(50deg) rotateX(30deg) scale(${(idx + sizeOfButtons()) * 0.12}`,
                         }}
@@ -117,12 +127,7 @@ const Buttons = ({ guessed, handleGuess, classes, answer, isWinner }) => {
     }
 
     return (
-        <div className={classes.root}
-            style={{
-                textAlign: 'center',
-                border: '1px solid black'
-            }}
-        >
+        <div className={classes.root}>
             {'qwertyuiopasdfghjkl;zxcvbnm'.split('').map((letter, idx) => (
                 <React.Fragment key={letter}>
                     <button
