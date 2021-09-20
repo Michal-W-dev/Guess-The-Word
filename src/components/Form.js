@@ -15,9 +15,8 @@ const styles = {
     dialog: {
         borderTop: '2px solid #3f51b5',
         borderBottom: '2px solid #3f51b5',
-        '& #tabpanel-1': {
-            overflowX: 'hidden'
-        }
+        // Avoid showing scroll at form animation
+        '& #tabpanel-1': { overflowX: 'hidden' }
     },
     formTitle: {
         fontWeight: '400',
@@ -81,13 +80,14 @@ const marks = [
     { value: 7, label: '7°' },
 ];
 
-const Form = ({ classes, showForm, changeName, changeDifficulty, closeForm }) => {
+const Form = (props) => {
+    const { classes, showForm, changeName, changeDifficulty, closeForm, maxWrong, name } = props;
     const { show, tabIndex } = showForm;
     //Tabs
     const [value, setValue] = useState();
     //Forms
-    const [inputText, setInputText] = useState('')
-    const [sliderValue, setSliderValue] = useState(0)
+    const [inputText, setInputText] = useState(name)
+    const [sliderValue, setSliderValue] = useState(maxWrong)
 
     const handleTabChange = (evt, newValue) => setValue(newValue)
 

@@ -23,7 +23,7 @@ import Icon3 from '@material-ui/icons/Looks3Outlined';
 import Icon2 from '@material-ui/icons/LooksTwoOutlined';
 import Icon1 from '@material-ui/icons/LooksOneOutlined';
 import Form from './Form'
-
+import sizes from '../styles/sizes'
 
 const drawerWidth = 240;
 
@@ -38,6 +38,10 @@ const styles = theme => ({
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.leavingScreen,
         }),
+        [sizes.down('md')]: { paddingLeft: '1rem' },
+        '& button': {
+            [sizes.down('md')]: { display: 'none' },
+        }
     },
     appBarShift: {
         marginLeft: drawerWidth,
@@ -62,11 +66,12 @@ const styles = theme => ({
         backgroundColor: 'grey',
         '& > div': {
             backgroundColor: 'rgba(0,0,0,0.5)',
-            color: 'aqua'
+            color: 'hsl(189, 100%, 60%)'
         },
         '& svg': {
             fontSize: '2.7rem',
-            color: 'aqua',
+            // color: 'hsl(180, 100%, 50%)',
+            color: 'hsl(189, 100%, 60%)',
         },
         '& span': {
             fontSize: '2.1rem',
@@ -77,8 +82,8 @@ const styles = theme => ({
     },
     listItem: {
         '&:hover': {
-            background: 'black',
-            boxShadow: 'inset 2px 0 2px aqua'
+            background: 'rgba(0,0,0,.5)',
+            boxShadow: 'inset 2px 0 2px hsl(189, 100%, 60%)'
         }
     },
     divider: {
@@ -109,17 +114,21 @@ const styles = theme => ({
         ...theme.mixins.toolbar,
     },
     content: {
-        flexGrow: 1,
-        padding: theme.spacing(4),
-        color: 'white'
+        // flexGrow: 1,
+        padding: theme.spacing(0),
+        color: 'white',
+        margin: '3.5%',
+        width: '75%',
+        [sizes.down('xlg')]: { width: '100%' },
+        [sizes.down('md')]: { margin: 0 },
     },
 });
 
-const MainDrawer = ({ classes, children }) => {
+const MainDrawer = ({ classes, children, maxWrong, changeMaxWrong }) => {
     const theme = useTheme();
     const [open, setOpen] = useState(false);
     const [name, setName] = useState('Mike');
-    const [difficult, setDifficult] = useState(4);
+
 
     const [showForm, setShowForm] = useState({ show: false, tabIndex: 2 })
 
@@ -128,27 +137,29 @@ const MainDrawer = ({ classes, children }) => {
 
 
     const handleShowingForm = ({ show = false, tabIndex }) => setShowForm({ show, tabIndex })
-    const changeDifficulytLevel = (level) => setDifficult(level)
+
 
     const handleNameChange = (name) => setName(name)
 
 
     const renderNumber = () => (
-        (difficult === 7) ? <Icon7 />
-            : (difficult === 6) ? <Icon6 />
-                : (difficult === 5) ? <Icon5 />
-                    : (difficult === 4) ? <Icon4 />
-                        : (difficult === 3) ? <Icon3 />
-                            : (difficult === 2) ? <Icon2 /> : <Icon1 />
+        (maxWrong === 7) ? <Icon7 />
+            : (maxWrong === 6) ? <Icon6 />
+                : (maxWrong === 5) ? <Icon5 />
+                    : (maxWrong === 4) ? <Icon4 />
+                        : (maxWrong === 3) ? <Icon3 />
+                            : (maxWrong === 2) ? <Icon2 /> : <Icon1 />
     )
 
     return (
         <div className={classes.root}>
             <Form
                 showForm={showForm}
-                changeDifficulty={changeDifficulytLevel}
+                changeDifficulty={changeMaxWrong}
                 changeName={handleNameChange}
                 closeForm={handleShowingForm}
+                maxWrong={maxWrong}
+                name={name}
             />
             <AppBar
                 position="fixed"
@@ -200,12 +211,12 @@ const MainDrawer = ({ classes, children }) => {
 
                 </List>
                 <Divider className={classes.divider} />
-                <List>
+                {/* <List>
                     <ListItem button className={classes.listItem}>
                         <ListItemIcon> <ScoreHistoryIcon /></ListItemIcon>
                         <ListItemText primary='Last scores' />
                     </ListItem>
-                </List>
+                </List> */}
             </Drawer>
             <main className={classes.content}>
                 <div className={classes.toolbar} />
