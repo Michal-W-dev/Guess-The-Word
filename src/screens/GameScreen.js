@@ -1,177 +1,12 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect } from 'react'
 import { withStyles } from '@material-ui/core/styles';
 import Buttons from '../components/Buttons'
 import MainDrawer from '../components/MainDrawer'
 import { arrCategory, arrConstraint, random, genBackground } from "../utils"
 import TextField from '@material-ui/core/TextField';
-import sizes from '../styles/sizes'
 import CustomTooltip from '../components/Tooltip'
 import useHeightAnimHook from '../hooks/useHeightAnimHook';
-
-const styles = {
-    root: {
-        margin: '0 auto',
-    },
-    container: {
-        borderRadius: '25px',
-        boxShadow: '4px 4px 6px 2px black',
-        border: '2px solid white',
-        overflow: 'hidden',
-        [sizes.down('md')]: {
-            boxShadow: 'inset 1px 1px 2px 1px black',
-            borderRadius: 0,
-            border: 'none',
-        },
-        transition: '1s height'
-    },
-    headerContainer: {
-        // backgroundColor: 'rgb(50, 50, 50)',
-        backgroundColor: 'rgba(0, 0, 0, 0.2)',
-        // backgroundColor: 'rgba(255,255,255, 0.2)',
-        // textShadow: '0 0 1px aqua, 0 0 2px aqua, 0 0 3px aqua',
-        // display: 'block',
-        width: '100%',
-        height: '7rem',
-        // lineHeight: '7rem',
-        // textAlign: 'center',
-        padding: '0 4rem',
-        // borderBottom: '1px solid rgba(255,255,255,.7)',
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        '& h1': {
-            fontFamily: 'Montserrat, Segoe UI',
-            fontSize: '3.3rem',
-            fontWeight: 400,
-            color: 'hsl(200, 100%, 75%)',
-            textShadow: '1px 1px black',
-        },
-        '& p': {
-            textAlign: 'right',
-            fontSize: '2.5rem',
-            color: 'hsl(210, 100%, 80%)',
-            '& span': {
-                marginLeft: '1rem',
-                fontSize: '2.6rem',
-                fontWeight: 400
-            }
-        },
-        [sizes.up('md')]: {
-            boxShadow: 'inset 1px 1px 4px black, inset 0 0 1px 2px white',
-            // boxShadow: 'inset 1px 1px 5px black, inset 0 0 1px 2px white, inset 0 -2px 0px 1px white',
-        },
-    },
-    main: {
-        [sizes.up('md')]: {
-            boxShadow: 'inset 1px 1px 4px black, inset 0 -1px 1px 2px white',
-        },
-        fontSize: '2.1rem',
-        color: 'hsl(210, 100%, 96%)',
-        textShadow: '1px 1px 1px black, 1px 1px 1px black',
-        padding: '1.3rem 3rem 3rem 5rem',
-        [sizes.down('md')]: { padding: '1.7rem', },
-        '& p': {
-            margin: '0.9rem',
-        },
-        '& input': {
-            color: 'white',
-            borderRadius: '9px',
-            // padding: '5rem 0 0 0',
-            fontSize: '2rem',
-            paddingLeft: '2rem',
-            width: '12rem',
-            boxShadow: 'inset 3px 3px 3px black, 1px 1px 2px 1px black',
-            textTransform: 'uppercase',
-            border: '1px solid hsl(210, 100%, 90%)',
-        },
-        '& label': {
-            // paddingLeft: '1.5rem',
-            color: 'white',
-            fontSize: '2rem',
-        },
-        '& strong': {
-            fontWeight: 400
-        },
-        '& hr': {
-            borderColor: 'rgba(255,255,255,.7)',
-            height: '4px',
-            borderRadius: '50px',
-            background: 'black',
-            boxShadow: 'inset 0 1px 1px white',
-        }
-    },
-    textField: {
-        '& label.Mui-focused': {
-            color: 'hsl(210, 100%, 90%)',
-        },
-        '& .MuiFilledInput-underline:before': {
-            borderRadius: '9px',
-            width: '95%',
-            margin: '0 auto',
-        },
-        '& .MuiFilledInput-underline:hover:before': {
-            borderBottomColor: 'rgba(255,255,255,0.9)',
-        },
-        '& .MuiFilledInput-underline:after': {
-            borderBottom: '2px solid hsl(215, 100%, 60%)',
-            width: '93%',
-            margin: '0 auto',
-        },
-        // '& .MuiInput-underline:after': {
-        //     borderBottomColor: 'hsl(215, 100%, 50%)',
-        // },
-        // '& .MuiOutlinedInput-root': {
-        //     '& fieldset': {},
-        //     '&:hover fieldset': {},
-        //     '&.Mui-focused fieldset': {},
-        // },
-    },
-
-    buttonsContainer: {
-        '& button': {
-            fontSize: '2rem',
-            fontWeight: 100,
-            padding: '7px 20px',
-            letterSpacing: '2px',
-            backgroundColor: '#3f51b5',
-            color: 'white',
-            borderRadius: '5px',
-            outline: 'none',
-            border: 'none',
-            margin: '3px',
-            transform: 'skew(-15deg) rotate(-0deg)',
-            boxShadow: '1px 1px 1px aqua, 0 0 1px 1px rgba(255,255,255,.9), 2px 2px 3px 1px black',
-            // textShadow: '1px 1px 2px black',
-            cursor: 'pointer',
-            transition: '1s cubic-bezier(0.34, 1.56, 0.64, 1)',
-            '&:disabled': {
-                background: 'rgba(0,0,0,.1)',
-            },
-            '&:disabled:hover': {
-                transform: 'skew(-15deg) rotate(-0deg)',
-                cursor: 'default',
-                boxShadow: '1px 1px 1px 0px aqua, 0 1px 2px 1px white, inset 0px 0px 1px aqua, 3px 3px 4px 1px black',
-                textShadow: '1px 1px #1f36b4, 1px 1px 1px aqua, 1px 1px 3px aqua',
-            },
-            '&:hover': {
-                //
-                // transform: 'skew(-40deg) rotateY(50deg) rotateX(30deg) scale(6)',
-                // boxShadow: '2px 1px 1px 0px aqua, 0 1px 2px white, inset -1px -1px 0 1px aqua, inset 1px 1px 1px aqua',
-                //
-                transform: 'skew(-40deg) rotateY(40deg) rotateX(30deg)',
-                // transform: 'skew(-40deg) rotateY(35deg) rotateX(25deg)',
-                boxShadow: '2px 2px 1px 0px aqua, 0 1px 2px white, inset -1px -1px 3px aqua',
-                color: 'rgb(190, 255, 255)',
-                textShadow: '2px 2px #1f36b4, 2px 2px 2px aqua, 2px 2px 12px aqua',
-                // transform: 'skew(-30deg) rotateY(40deg)',
-                // transform: 'skew(20deg) rotateY(40deg) '
-                // transform: 'skew(-10deg) rotate(-3deg) rotateY(5deg)',
-            },
-        },
-    },
-}
-
-
+import styles from '../styles/GameScreenStyles'
 
 
 const GameScreen = ({ classes }) => {
@@ -201,9 +36,18 @@ const GameScreen = ({ classes }) => {
     // Get height based on main content, updated at (fetchedData, isWinner, lostGame)
     const [height, ref] = useHeightAnimHook(fetchedData, isWinner, lostGame)
 
-    // Set difficulty level. State maxWrong is passing to (MainDrawer Component) & then to (Form) Component
-    const [maxWrong, setMaxWrong] = useState(2);
+
+    // Set local storage
+    const initData = JSON.parse(window.localStorage.getItem('storageData')) || { name: 1, maxWrong: 4 }
+    // Set (name & difficulty level). State maxWrong is passing to (MainDrawer Component) & then to (Form) Component
+    const [maxWrong, setMaxWrong] = useState(initData.maxWrong);
+    const [name, setName] = useState(initData.name);
     const changeMaxWrong = (level) => setMaxWrong(level)
+    const changeName = (name) => setName(name)
+
+    useEffect(() => {
+        window.localStorage.setItem('storageData', JSON.stringify({ name, maxWrong }))
+    }, [name, maxWrong])
 
 
     const getData = () => {
@@ -215,13 +59,10 @@ const GameScreen = ({ classes }) => {
                 let rand;
                 do {
                     rand = random(data)
-                    // console.log('rand ', rand.word.length, rand.defs.join(''));
                 } while (rand.word.length < 5 || rand.word.length > 16)
 
                 let tags = rand.tags.join(', ');
-                let def = rand.defs || ['no definition available, try to guess it anyway! :)'];
-                // console.log('constraint', constraint, 'category', category, 'data', data, 'tags', tags, 'def', def);
-                console.log('tags', tags, 'def', def);
+                let def = rand.defs || ['no definition is available, try to guess it anyway!'];
 
                 setFetchedData({
                     answer: rand.word,
@@ -257,10 +98,14 @@ const GameScreen = ({ classes }) => {
         updateStateOnEvent(letter)
     }
     const handleGuessKey = (evt) => {
-        let letter = evt.key;
-        if (!guessedLtr.has(letter)) updateStateOnEvent(letter)
-        evt.target.placeholder = letter;
-        setTimeout(() => evt.target.value = "", 150)
+        if (evt.key === 'ArrowLeft') !disabled.left && handleLeft()
+        else if (evt.key === 'ArrowRight') !disabled.right && handleRight()
+        else {
+            let letter = evt.key;
+            if (!guessedLtr.has(letter)) updateStateOnEvent(letter)
+            // evt.target.placeholder = letter;
+            setTimeout(() => evt.target.value = "", 150)
+        }
     }
 
     const handleSyllables = () => {
@@ -282,13 +127,11 @@ const GameScreen = ({ classes }) => {
                 let count = 0;
                 do {
                     let randWord = random(data).word
-                    if (randWord.length > 3) {
+                    if (randWord.length > 4) {
                         nums.add(randWord)
                     }
                     count++;
-                    // nums.add(random(data).word)
-                    // console.log(nums, count);
-                } while (nums.size < 3 && count < max)
+                } while (nums.size < 4 && count < max)
                 const updatedDisabled = { ...disabled, [direction]: true }
                 setHint({
                     disabled: updatedDisabled,
@@ -316,7 +159,6 @@ const GameScreen = ({ classes }) => {
             msg: 'there is no message for you.',
             disabled: { left: false, syllables: false, right: false }
         })
-        // setShrink(false)
     }
 
     const endResult = () => {
@@ -380,13 +222,7 @@ const GameScreen = ({ classes }) => {
 
     }
 
-    // render: render game //
-    // const maxWrong = 3;
-    // let lostGame = (nWrong >= maxWrong) 
-    // if (nWrong >= maxWrong) setLostGame(true)
-    // console.log(nWrong, '>', maxWrong)
-    // 
-    // let altText = `${nWrong} / ${maxWrong} guesses`
+
     let capConstraint = constraint.charAt(0).toUpperCase() + constraint.slice(1);
 
     // Generate (buttons)
@@ -399,14 +235,14 @@ const GameScreen = ({ classes }) => {
         <TextField id="filled-basic" label="Type a letter" variant="filled"
             classes={{ root: classes.textField }}
             onKeyDown={handleGuessKey} autoComplete='off'
+            placeholder={!guessedLtr.size ? '' : [...guessedLtr].pop()}
         />
         // {/* <TextField id="standard-basic" label="Type a letter" classes={{ root: classes.textField }} onKeyDown={handleGuessKey} autoComplete='off' /> */}
     )
 
-
     return (
         <div className={classes.root} >
-            <MainDrawer maxWrong={maxWrong} changeMaxWrong={changeMaxWrong}>
+            <MainDrawer maxWrong={maxWrong} changeMaxWrong={changeMaxWrong} name={name} changeName={changeName}>
                 {/* Height from useHeightAnimHook. Function genBg(numOfStripes, minSaturation, maxSaturation) */}
                 <div className={classes.container} style={{ background: genBackground(8, 20, 35), height }} >
                     <header className={classes.headerContainer}>
@@ -427,7 +263,6 @@ const GameScreen = ({ classes }) => {
 
                             {/* {console.log(fetchedData)} */}
                             {/* {(lostGame || isWinner) ? endResult() : genBtnsInput} */}
-
                             {generateBtns}
                             <div className='input' style={{
                                 textAlign: 'center',
@@ -440,7 +275,6 @@ const GameScreen = ({ classes }) => {
                                 >{guessedWord()}</p>
                                 {generateInput}
                             </div>
-                            {/* {console.log('rendered __________1')} */}
                             <div className="hint-msg">
 
                                 {/* {(msg.includes(' message ')) && <p className='description'>Click 'Left', 'Right' or 'Hint' button to display more messages. Hover over each message to get more description.</p>} */}
@@ -454,16 +288,15 @@ const GameScreen = ({ classes }) => {
                                 className={classes.buttonsContainer}
                                 style={{ maxWidth: '75rem', textAlign: 'center' }}
                             >
-                                <CustomTooltip title='Common words that appear immediately to the left of the target word' isDisabled={disabled.left}                                >
-                                    <span><button onClick={handleLeft} disabled={disabled.left}>Left</button></span>
+                                <CustomTooltip title='Common words that appear immediately to the left of the target word' isDisabled={isWinner || lostGame || disabled.left}>
+                                    <span><button onClick={handleLeft} disabled={isWinner || lostGame || disabled.left}>Left</button></span>
                                 </CustomTooltip>
-                                <CustomTooltip title='Show number of syllables' isDisabled={disabled.syllables}                                >
-                                    <span><button onClick={handleSyllables} disabled={disabled.syllables}>Syllables</button></span>
+                                <CustomTooltip title='Show number of syllables' isDisabled={isWinner || lostGame || disabled.syllables}>
+                                    <span><button onClick={handleSyllables} disabled={isWinner || lostGame || disabled.syllables}>Syllables</button></span>
                                 </CustomTooltip>
-                                <CustomTooltip title='Common words that appear immediately to the right of the target word' isDisabled={disabled.right} >
-                                    <span><button onClick={handleRight} disabled={disabled.right}>Right</button></span>
+                                <CustomTooltip title='Common words that appear immediately to the right of the target word' isDisabled={isWinner || lostGame || disabled.right}>
+                                    <span><button onClick={handleRight} disabled={isWinner || lostGame || disabled.right}>Right</button></span>
                                 </CustomTooltip>
-
                                 <button className='btn next' onClick={handleRestart}
                                     style={{ margin: '1rem 4rem' }}
                                 >

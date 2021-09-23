@@ -14,7 +14,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import FaceIcon from '@material-ui/icons/Face';
-import ScoreHistoryIcon from '@material-ui/icons/FolderOpenOutlined';
+// import ScoreHistoryIcon from '@material-ui/icons/FolderOpenOutlined';
 import Icon7 from '@material-ui/icons/Filter7Outlined';
 import Icon6 from '@material-ui/icons/Looks6Outlined';
 import Icon5 from '@material-ui/icons/Looks5Outlined';
@@ -23,111 +23,12 @@ import Icon3 from '@material-ui/icons/Looks3Outlined';
 import Icon2 from '@material-ui/icons/LooksTwoOutlined';
 import Icon1 from '@material-ui/icons/LooksOneOutlined';
 import Form from './Form'
-import sizes from '../styles/sizes'
+import styles from '../styles/MainDrawerStyles'
 
-const drawerWidth = 240;
-
-const styles = theme => ({
-    root: {
-        display: 'flex',
-        overflow: 'hidden'
-    },
-    appBar: {
-        zIndex: theme.zIndex.drawer + 1,
-        transition: theme.transitions.create(['width', 'margin'], {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.leavingScreen,
-        }),
-        [sizes.down('md')]: { paddingLeft: '1rem' },
-        '& button': {
-            [sizes.down('md')]: { display: 'none' },
-        }
-    },
-    appBarShift: {
-        marginLeft: drawerWidth,
-        width: `calc(100% - ${drawerWidth}px)`,
-        transition: theme.transitions.create(['width', 'margin'], {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.enteringScreen,
-        }),
-    },
-    menuButton: {
-        marginRight: 36,
-    },
-    hide: {
-        transition: '.45s ease-out',
-        transform: 'scale(0,1) translate(150px)',
-        marginLeft: '-70px'
-    },
-    drawer: {
-        width: drawerWidth,
-        flexShrink: 0,
-        whiteSpace: 'nowrap',
-        backgroundColor: 'grey',
-        '& > div': {
-            backgroundColor: 'rgba(0,0,0,0.5)',
-            color: 'hsl(189, 100%, 60%)'
-        },
-        '& svg': {
-            fontSize: '2.7rem',
-            // color: 'hsl(180, 100%, 50%)',
-            color: 'hsl(189, 100%, 60%)',
-        },
-        '& span': {
-            fontSize: '2.1rem',
-            color: 'aqua',
-            fontFamily: 'Segoe UI',
-            fontWeight: 300,
-        }
-    },
-    listItem: {
-        '&:hover': {
-            background: 'rgba(0,0,0,.5)',
-            boxShadow: 'inset 2px 0 2px hsl(189, 100%, 60%)'
-        }
-    },
-    divider: {
-        background: 'black',
-        boxShadow: '0 1px 1px rgba(255,255,255,.5)'
-    },
-    drawerOpen: {
-        width: drawerWidth,
-        transition: theme.transitions.create('width', {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.enteringScreen,
-        }),
-    },
-    drawerClose: {
-        transition: theme.transitions.create('width', {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.leavingScreen,
-        }),
-        overflowX: 'hidden',
-        width: theme.spacing(7) + 1,
-    },
-    toolbar: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'flex-end',
-        padding: theme.spacing(0, 1),
-        // necessary for content to be below app bar
-        ...theme.mixins.toolbar,
-    },
-    content: {
-        // flexGrow: 1,
-        padding: theme.spacing(0),
-        color: 'white',
-        margin: '3.5%',
-        width: '75%',
-        [sizes.down('xlg')]: { width: '100%' },
-        [sizes.down('md')]: { margin: 0 },
-    },
-});
-
-const MainDrawer = ({ classes, children, maxWrong, changeMaxWrong }) => {
+const MainDrawer = ({ classes, children, maxWrong, changeMaxWrong, name, changeName }) => {
     const theme = useTheme();
     const [open, setOpen] = useState(false);
-    const [name, setName] = useState('Mike');
+    // const [name, setName] = useState('1');
 
 
     const [showForm, setShowForm] = useState({ show: false, tabIndex: 2 })
@@ -139,7 +40,7 @@ const MainDrawer = ({ classes, children, maxWrong, changeMaxWrong }) => {
     const handleShowingForm = ({ show = false, tabIndex }) => setShowForm({ show, tabIndex })
 
 
-    const handleNameChange = (name) => setName(name)
+    // const handleNameChange = (name) => setName(name)
 
 
     const renderNumber = () => (
@@ -156,10 +57,10 @@ const MainDrawer = ({ classes, children, maxWrong, changeMaxWrong }) => {
             <Form
                 showForm={showForm}
                 changeDifficulty={changeMaxWrong}
-                changeName={handleNameChange}
-                closeForm={handleShowingForm}
+                changeName={changeName}
                 maxWrong={maxWrong}
                 name={name}
+                closeForm={handleShowingForm}
             />
             <AppBar
                 position="fixed"
