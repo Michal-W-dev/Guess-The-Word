@@ -13,10 +13,14 @@ const styles = theme => ({
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.leavingScreen,
         }),
-        [sizes.down('md')]: { paddingLeft: '1rem' },
+        '& .player-name': {
+            fontSize: '30px',
+            '& span': { fontWeight: '400' }
+        },
+        [sizes.down('lg')]: { paddingLeft: '1rem' },
         '& button': {
-            [sizes.down('md')]: { display: 'none' },
-        }
+            [sizes.down('lg')]: { display: 'none' },
+        },
     },
     appBarShift: {
         marginLeft: drawerWidth,
@@ -25,6 +29,7 @@ const styles = theme => ({
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.enteringScreen,
         }),
+        [sizes.down('lg')]: { width: '100%' },
     },
     menuButton: {
         marginRight: 36,
@@ -41,7 +46,6 @@ const styles = theme => ({
         backgroundColor: 'grey',
         '& > div': {
             backgroundColor: 'rgba(0,0,0,0.5)',
-            color: 'hsl(189, 100%, 60%)'
         },
         '& svg': {
             fontSize: '2.7rem',
@@ -49,9 +53,9 @@ const styles = theme => ({
         },
         '& span': {
             fontSize: '2.1rem',
-            color: 'aqua',
             fontFamily: 'Segoe UI',
             fontWeight: 300,
+            color: 'hsl(189, 100%, 60%)'
         }
     },
     listItem: {
@@ -70,6 +74,10 @@ const styles = theme => ({
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.enteringScreen,
         }),
+        [sizes.down('lg')]: {
+            overflowX: 'hidden',
+            width: theme.spacing(7) + 1,
+        },
     },
     drawerClose: {
         transition: theme.transitions.create('width', {

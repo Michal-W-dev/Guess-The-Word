@@ -2,12 +2,7 @@ import sizes from './sizes'
 
 const styles = {
     root: {
-        textAlign: 'center',
-        maxWidth: '75rem',
         marginTop: '2.5rem',
-        '& br': {
-            [sizes.down('xs')]: { display: 'none' },
-        }
     },
     button: {
         fontSize: '2.2rem',

@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import { OptionsContext } from '../context/options.context';
 import clsx from 'clsx';
 import { withStyles, useTheme } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
@@ -14,7 +15,6 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import FaceIcon from '@material-ui/icons/Face';
-// import ScoreHistoryIcon from '@material-ui/icons/FolderOpenOutlined';
 import Icon7 from '@material-ui/icons/Filter7Outlined';
 import Icon6 from '@material-ui/icons/Looks6Outlined';
 import Icon5 from '@material-ui/icons/Looks5Outlined';
@@ -25,22 +25,16 @@ import Icon1 from '@material-ui/icons/LooksOneOutlined';
 import Form from './Form'
 import styles from '../styles/MainDrawerStyles'
 
-const MainDrawer = ({ classes, children, maxWrong, changeMaxWrong, name, changeName }) => {
+const MainDrawer = ({ classes, children, changeMaxWrong }) => {
     const theme = useTheme();
+    const { maxWrong, name } = useContext(OptionsContext)
+
     const [open, setOpen] = useState(false);
-    // const [name, setName] = useState('1');
-
-
     const [showForm, setShowForm] = useState({ show: false, tabIndex: 2 })
 
     const handleDrawerOpen = () => setOpen(true);
     const handleDrawerClose = () => setOpen(false);
-
-
     const handleShowingForm = ({ show = false, tabIndex }) => setShowForm({ show, tabIndex })
-
-
-    // const handleNameChange = (name) => setName(name)
 
 
     const renderNumber = () => (
@@ -57,9 +51,6 @@ const MainDrawer = ({ classes, children, maxWrong, changeMaxWrong, name, changeN
             <Form
                 showForm={showForm}
                 changeDifficulty={changeMaxWrong}
-                changeName={changeName}
-                maxWrong={maxWrong}
-                name={name}
                 closeForm={handleShowingForm}
             />
             <AppBar
@@ -76,7 +67,7 @@ const MainDrawer = ({ classes, children, maxWrong, changeMaxWrong, name, changeN
                     >
                         <MenuIcon />
                     </IconButton>
-                    <p style={{ fontSize: '30px' }}> Player: <span style={{ fontWeight: '400' }}>{name}</span> </p>
+                    <p className='player-name'> Player: <span>{name}</span> </p>
                 </Toolbar>
             </AppBar>
             <Drawer
@@ -112,12 +103,6 @@ const MainDrawer = ({ classes, children, maxWrong, changeMaxWrong, name, changeN
 
                 </List>
                 <Divider className={classes.divider} />
-                {/* <List>
-                    <ListItem button className={classes.listItem}>
-                        <ListItemIcon> <ScoreHistoryIcon /></ListItemIcon>
-                        <ListItemText primary='Last scores' />
-                    </ListItem>
-                </List> */}
             </Drawer>
             <main className={classes.content}>
                 <div className={classes.toolbar} />

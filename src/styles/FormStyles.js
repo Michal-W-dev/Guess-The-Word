@@ -3,7 +3,10 @@ const styles = {
         borderTop: '2px solid #3f51b5',
         borderBottom: '2px solid #3f51b5',
         // Avoid showing scroll at form animation
-        '& #tabpanel-1': { overflowX: 'hidden' }
+        '& #tabpanel-1': { overflowX: 'hidden' },
+        '& .tab': {
+            fontSize: '1.4rem'
+        }
     },
     formTitle: {
         fontWeight: '400',
@@ -18,10 +21,14 @@ const styles = {
             width: '20rem',
             fontSize: '1.8rem',
         },
-        '& button': {
-            fontSize: '1rem',
-            marginTop: '0.3rem'
+        '& .btns-container': {
+            textAlign: 'right',
+            '& button': {
+                fontSize: '1rem',
+                marginTop: '0.3rem',
+            },
         },
+
         '&.slideLeft': {
             animation: '$slideLeft .5s'
         },

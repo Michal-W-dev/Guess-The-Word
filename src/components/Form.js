@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
+import { OptionsContext } from '../context/options.context';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import TextField from '@material-ui/core/TextField';
@@ -21,14 +22,16 @@ const marks = [
     { value: 7, label: '7°' },
 ];
 
-const Form = (props) => {
-    const { classes, showForm, changeName, changeDifficulty, closeForm, maxWrong, name } = props;
+const Form = ({ classes, showForm, closeForm }) => {
     const { show, tabIndex } = showForm;
+    const { maxWrong, changeMaxWrong, name, changeName } = useContext(OptionsContext)
+
     //Tabs
     const [value, setValue] = useState();
     //Forms
     const [inputText, setInputText] = useState(name)
     const [sliderValue, setSliderValue] = useState(maxWrong)
+
 
     const handleTabChange = (evt, newValue) => setValue(newValue)
 
@@ -38,10 +41,11 @@ const Form = (props) => {
         evt.preventDefault()
         closeForm({ tabIndex: value })
         changeName(inputText)
-        changeDifficulty(sliderValue)
+        changeMaxWrong(sliderValue)
     }
 
     const handleTextChange = (evt) => setInputText(evt.target.value)
+
     const handleSliderChange = (evt, newValue) => setSliderValue(newValue)
 
     const stopPropagation = (evt) => evt.stopPropagation();
@@ -57,9 +61,9 @@ const Form = (props) => {
                         onChange={handleTabChange}
                         aria-label="options tabs"
                     >
-                        <Tab label="Set Name" style={{ fontSize: '1.4rem' }} />
-                        <Tab label="Set Difficulty" style={{ fontSize: '1.4rem' }} />
-                        <Tab label=" " disabled style={{ fontSize: '1.4rem' }} />
+                        <Tab className='tab' label="Set Name" />
+                        <Tab className='tab' label="Set Difficulty" />
+                        <Tab className='tab' label=" " disabled />
                     </Tabs>
                 </Paper>
                 <TabPanel value={value} index={0} >
@@ -77,7 +81,7 @@ const Form = (props) => {
                             inputRef={input => input && input.focus()}
                             value={inputText}
                         />
-                        <div style={{ textAlign: 'right' }}>
+                        <div className='btns-container'>
                             <Button
                                 color='primary'
                                 onClick={() => closeForm({ tabIndex: value })}
@@ -113,7 +117,7 @@ const Form = (props) => {
                             value={sliderValue}
                             marks={marks}
                         />
-                        <div style={{ textAlign: 'right' }}>
+                        <div className='btns-container'>
                             <Button
                                 color='primary'
                                 onClick={() => closeForm({ tabIndex: value })}
@@ -134,8 +138,3 @@ const Form = (props) => {
     )
 }
 export default withStyles(styles)(Form);
-
-
-
-
-

@@ -4,7 +4,7 @@ const styles = {
     root: {
         margin: '0 auto',
     },
-    container: {
+    mainContainer: {
         borderRadius: '25px',
         boxShadow: '4px 4px 6px 2px black',
         border: '2px solid white',
@@ -14,7 +14,23 @@ const styles = {
             borderRadius: 0,
             border: 'none',
         },
-        transition: '1s height'
+        transition: '1s height',
+        '& .centeredSection': {
+            textAlign: 'center',
+            maxWidth: '75rem',
+            marginBottom: '2rem',
+            '& br': {
+                [sizes.down('xs')]: { display: 'none' },
+            },
+            '& .guessedWord': {
+                letterSpacing: '2rem',
+                textTransform: 'uppercase',
+                marginTop: '3.5rem',
+                marginBottom: '2rem',
+                fontFamily: 'Montserrat',
+                fontWeight: '300'
+            }
+        }
     },
     headerContainer: {
         backgroundColor: 'rgba(0, 0, 0, 0.2)',
@@ -35,7 +51,10 @@ const styles = {
             textAlign: 'right',
             fontSize: '2.5rem',
             color: 'hsl(210, 100%, 80%)',
-            '& span': {
+            '& span:first-child': {
+                [sizes.down('xs')]: { display: 'none' },
+            },
+            '& span:last-child': {
                 marginLeft: '1rem',
                 fontSize: '2.6rem',
                 fontWeight: 400
@@ -99,17 +118,14 @@ const styles = {
             width: '93%',
             margin: '0 auto',
         },
-        // '& .MuiInput-underline:after': {
-        //     borderBottomColor: 'hsl(215, 100%, 50%)',
-        // },
-        // '& .MuiOutlinedInput-root': {
-        //     '& fieldset': {},
-        //     '&:hover fieldset': {},
-        //     '&.Mui-focused fieldset': {},
-        // },
     },
 
     buttonsContainer: {
+        maxWidth: '75rem',
+        textAlign: 'center',
+        '& .btn-next': {
+            margin: '1rem 4rem'
+        },
         '& button': {
             fontSize: '2rem',
             fontWeight: 100,
@@ -123,9 +139,7 @@ const styles = {
             margin: '3px',
             transform: 'skew(-15deg) rotate(-0deg)',
             boxShadow: '1px 1px 1px aqua, 0 0 1px 1px rgba(255,255,255,.9), 2px 2px 3px 1px black',
-            // textShadow: '1px 1px 2px black',
             cursor: 'pointer',
-            // transition: '1s cubic-bezier(0.34, 1.56, 0.64, 1)',
             transition: '0.1s',
             '&:disabled': {
                 background: 'rgba(0,0,0,.1)',
@@ -137,25 +151,44 @@ const styles = {
                 textShadow: '1px 1px #1f36b4, 1px 1px 1px aqua, 1px 1px 3px aqua',
             },
             '&:hover': {
-                //
-                // transform: 'skew(-40deg) rotateY(50deg) rotateX(30deg) scale(6)',
-                // boxShadow: '2px 1px 1px 0px aqua, 0 1px 2px white, inset -1px -1px 0 1px aqua, inset 1px 1px 1px aqua',
-                //
-                // transform: 'skew(-40deg) rotateY(40deg) rotateX(30deg) scale(1.03)',
                 transform: 'skew(-31deg) rotateY(25deg) rotateX(20deg) scale(1.01)',
-                // transform: 'skew(-27deg) rotateY(30deg) rotateX(20deg)',
-
-                // boxShadow: '1px 1px 0 1px aqua, 0 0 2px white, inset -1px -1px 2px aqua',
                 boxShadow: '1px 1px 0 1px aqua, inset -1px -1px 2px aqua',
                 color: 'rgb(190, 255, 255)',
-                // textShadow: '2px 2px #1f36b4, 2px 2px 2px aqua, 2px 2px 12px aqua',
                 textShadow: '1px 1px #1f36b4, 1px 1px 1px aqua',
-                // transform: 'skew(-30deg) rotateY(40deg)',
-                // transform: 'skew(20deg) rotateY(40deg) '
-                // transform: 'skew(-10deg) rotate(-3deg) rotateY(5deg)',
             },
         },
     },
+    message: {
+        padding: '10px',
+        marginBottom: '0.5rem',
+        '& span': { fontStyle: 'italic' },
+        '& .win-msg': {
+            fontSize: '3.1rem',
+            fontWeight: '600',
+            marginLeft: '0.6rem'
+        },
+        '& .lose-msg': {
+            display: 'inline',
+            '& > span': {
+                fontSize: '3rem',
+                marginLeft: '0.5rem',
+            },
+            '& .correct-answer': {
+                fontSize: '2rem',
+                marginLeft: '10rem',
+                '& span': {
+                    fontWeight: '600',
+                    letterSpacing: '3px'
+                }
+            }
+        }
+    },
+    definitionsAtEndGame: {
+        marginTop: '3rem',
+        '& > p': {
+            fontWeight: 400
+        }
+    }
 }
 
 export default styles;

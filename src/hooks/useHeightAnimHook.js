@@ -5,6 +5,7 @@ const useHeightAnimHook = (fetchedData, isWinner, lostGame) => {
     const [height, setHeight] = useState(90)
     const ref = useRef(null)
 
+    // Update height if (fetchedData, isWinner, lostGame)
     useEffect(() => {
         setHeight(ref.current.scrollHeight + 70)
     }, [fetchedData, isWinner, lostGame])

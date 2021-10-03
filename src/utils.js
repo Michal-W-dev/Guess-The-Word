@@ -8,8 +8,12 @@ const arrConstraint = ['ml', 'topics']
 
 const random = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
+// Generate Guessed Word
+const genGuessedWord = (answer, guessedLetters) => (
+    answer.split('').map(letter => guessedLetters.has(letter) ? letter : '_')
+)
 
-// Linear-gradient Background
+// Generate linear-gradient Background
 const genBackground = (arrLength, topSatur, lowSatur) => {
     const randPercArr = Array(arrLength).fill().map((_, idx) => (
         idx * (100 / arrLength) + Math.ceil(Math.random() * (100 / arrLength))
@@ -25,4 +29,4 @@ const genBackground = (arrLength, topSatur, lowSatur) => {
     return `linear-gradient(25deg ${linearBackground.join('')})`
 }
 
-export { arrCategory, arrConstraint, random, genBackground };
+export { arrCategory, arrConstraint, random, genBackground, genGuessedWord };

@@ -14,7 +14,7 @@ const StartScreen = ({ classes, history }) => {
                 Welcome to the "Guess The Word" game.
             </div>
             <div className={classes.text2} onAnimationEnd={handleEndOfAnimation}>
-                Press "whatever" to start the game.
+                The game is about to start now!
             </div>
             <div className={classes.loaderContainer}>
                 <div className={classes.loaderTitle}>Guess The Word</div>

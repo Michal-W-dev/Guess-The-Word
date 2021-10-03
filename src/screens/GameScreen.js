@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
+import { OptionsContext } from '../context/options.context';
 import { withStyles } from '@material-ui/core/styles';
 import Buttons from '../components/Buttons'
 import MainDrawer from '../components/MainDrawer'
-import { arrCategory, arrConstraint, random, genBackground } from "../utils"
+import { arrCategory, arrConstraint, random, genBackground, genGuessedWord } from "../utils"
 import TextField from '@material-ui/core/TextField';
 import CustomTooltip from '../components/Tooltip'
 import useHeightAnimHook from '../hooks/useHeightAnimHook';
@@ -10,13 +11,17 @@ import styles from '../styles/GameScreenStyles'
 
 
 const GameScreen = ({ classes }) => {
+    const { maxWrong } = useContext(OptionsContext)
     const [nWrong, setNWrong] = useState(0)
     const [guessedLtr, setGuessedLtr] = useState(new Set())
     const [isWinner, setIsWinner] = useState(false)
     const [lostGame, setLostGame] = useState(false)
 
+    // genBackground(numOfStripes, minSaturation, maxSaturation)
+    const [background, setBackground] = useState(genBackground(8, 20, 35))
+
     const [hint, setHint] = useState({
-        msg: " Click 'Left', 'Right' or 'Hint' button to display more messages. Hover over each button to get more description.",
+        msg: " Click 'Left', 'Right' or 'Hint' button to display more messages. Hover over each button to get more information.",
         disabled: { left: false, syllables: false, right: false }
     })
 
@@ -37,19 +42,8 @@ const GameScreen = ({ classes }) => {
     const [height, ref] = useHeightAnimHook(fetchedData, isWinner, lostGame)
 
 
-    // Set local storage
-    const initData = JSON.parse(window.localStorage.getItem('storageData')) || { name: 1, maxWrong: 4 }
-    // Set (name & difficulty level). State maxWrong is passing to (MainDrawer Component) & then to (Form) Component
-    const [maxWrong, setMaxWrong] = useState(initData.maxWrong);
-    const [name, setName] = useState(initData.name);
-    const changeMaxWrong = (level) => setMaxWrong(level)
-    const changeName = (name) => setName(name)
-
-    useEffect(() => {
-        window.localStorage.setItem('storageData', JSON.stringify({ name, maxWrong }))
-    }, [name, maxWrong])
-
-
+    // Fetch data at start and restart of the game
+    // - additional fetch is needed to get 'left hint', 'right hint' (for more information look at fetchHint function)
     const getData = () => {
         let constraint = random(arrConstraint);
         let category = random(arrCategory);
@@ -72,52 +66,23 @@ const GameScreen = ({ classes }) => {
             }).catch((err) => console.log('ERROR!', err))
     }
 
-
-    const guessedWord = () => (
-        answer.split('').map(letter => guessedLtr.has(letter) ? letter : '_')
-    )
+    // Compare guessed letters to answer, e.g. gu_ss_dWord
+    const guessedWord = genGuessedWord(answer, guessedLtr)
 
     useEffect(() => {
         if (answer) {
-            if (guessedWord().join('') === answer) setIsWinner(true)
+            // Set the game to be lost or won depending on met conditions
+            if (guessedWord.join('') === answer) setIsWinner(true)
             else if (nWrong >= maxWrong) setLostGame(true)
+            // Fetch data at the start of the game
         } else getData()
-        // eslint-disable-next-line
-    }, [answer, guessedLtr, nWrong, maxWrong])
+    }, [answer, guessedWord, guessedLtr, nWrong, maxWrong])
 
 
-    const updateStateOnEvent = (letter) => {
-        if (!lostGame && !isWinner) {
-            setGuessedLtr(prevSt => new Set(prevSt.add(letter)))
-            setNWrong(nWrong + (answer.includes(letter) ? 0 : 1))
-        }
-    }
-
-    const handleGuessClick = (evt) => {
-        let letter = evt.target.value;
-        updateStateOnEvent(letter)
-    }
-    const handleGuessKey = (evt) => {
-        if (evt.key === 'ArrowLeft') !disabled.left && handleLeft()
-        else if (evt.key === 'ArrowRight') !disabled.right && handleRight()
-        else {
-            let letter = evt.key;
-            if (!guessedLtr.has(letter)) updateStateOnEvent(letter)
-            // evt.target.placeholder = letter;
-            setTimeout(() => evt.target.value = "", 150)
-        }
-    }
-
-    const handleSyllables = () => {
-        const updatedDisabled = { ...disabled, syllables: true }
-        setHint({
-            disabled: updatedDisabled,
-            msg: `number of syllables is ${numSyllables}`
-        })
-    }
-
-
+    // Fething hints (most common words appearing to the left or right of the target word).
+    // - data cannot be taken from initial fetch
     const fetchHint = (direction, max) => {
+        // max - fetch no more than top (max) results e.g. fetch no more than 20 first results
         const context = (direction === 'left') ? 'rc' : 'lc';
         fetch(`https://api.datamuse.com/words?${context}=${answer}&max=${max}`)
             .then(res => res.json())
@@ -140,170 +105,155 @@ const GameScreen = ({ classes }) => {
             })
     }
 
-    const handleLeft = () => {
-        fetchHint('left', 20)
+    // Handle presssing LEFT ARROW or 'Left' button (fetch random hint taken from top 20 results)
+    const handleLeft = () => fetchHint('left', 20)
+    // Handle presssing RIGHT ARROW or 'Right' button (fetch random hint taken from top 20 results)
+    const handleRight = () => fetchHint('right', 20)
+
+    // Handle pressing 'Syllables' button
+    const handleSyllables = () => {
+        const updatedDisabled = { ...disabled, syllables: true }
+        setHint({
+            disabled: updatedDisabled,
+            msg: `number of syllables is ${numSyllables}`
+        })
     }
 
-    const handleRight = () => {
-        fetchHint('right', 20)
+
+    const updateStateOnEvent = (letter) => {
+        if (!lostGame && !isWinner) {
+            setGuessedLtr(prevSt => new Set(prevSt.add(letter)))
+            setNWrong(nWrong + (answer.includes(letter) ? 0 : 1))
+        }
     }
 
-    // Reset values at restart
+    // Handle mouse events
+    const handleGuessClick = (evt) => {
+        let letter = evt.target.value;
+        updateStateOnEvent(letter)
+    }
+
+    // Handle key events 
+    // - letters update game state
+    // - LEFT & RIGHT arrows fetch the hints
+    const handleGuessKey = (evt) => {
+        if (evt.key === 'ArrowLeft') !disabled.left && handleLeft()
+        else if (evt.key === 'ArrowRight') !disabled.right && handleRight()
+        else {
+            let letter = evt.key;
+            if (!guessedLtr.has(letter)) updateStateOnEvent(letter)
+            setTimeout(() => evt.target.value = "", 150)
+        }
+    }
+
+
+    // Reset values at restart (next game)
     const handleRestart = () => {
         getData()
         setNWrong(0)
         setGuessedLtr(new Set())
         setIsWinner(false)
         setLostGame(false)
+        setBackground(genBackground(8, 20, 35))
         setHint({
             msg: 'there is no message for you.',
             disabled: { left: false, syllables: false, right: false }
         })
     }
 
+    // Render message at the end of the game (depending if player lost or won)
     const endResult = () => {
-        // let moreDef;
-        // if (def) {
-        //     moreDef = (def.length > 1) ? (
-        //         def.filter((el, i) => i > 0).map((el, i) => <p key={i}>{i + 2}.  {el}</p>)
-        //     ) : <p style={{ textAlign: 'center' }}>Only one definition available</p>;
-        // }
         if (isWinner) {
             return (
-
-                // <div className="EndResult">
-                //     <p style={{ fontSize: '40px', fontWeight: '900' }}>You win !! </p>
-                // </div>
-                <span style={{ fontSize: '3.1rem', fontWeight: '600', marginLeft: '0.6rem' }}> You win !! </span>
+                <span className='win-msg'> You win !! </span>
             )
         } else {
             return (
-                <>
-                    {/* // <div className="EndResult"> */}
-                    <span style={{ fontSize: '3rem', marginLeft: '0.5rem' }}> You lose !! </span>
-                    <p style={{ fontSize: '2rem', marginLeft: '10rem' }}>The correct answer is:
-                        <span style={{ fontWeight: '600', letterSpacing: '3px' }}> {answer.toUpperCase()}</span>
+                <div className='lose-msg'>
+                    <span> You lose !! </span>
+                    <p className='correct-answer'>The correct answer is:
+                        <span> {answer.toUpperCase()}</span>
                     </p>
-                    {/* <p style={{ fontSize: '3rem' }}>You lose !! </p>
-                    <p style={{ fontSize: '2rem' }}>The correct answer is:
-                        <span style={{ fontWeight: '600', letterSpacing: '3px' }}> {answer.toUpperCase()}</span>
-                    </p> */}
-                    {/* <p>Def.</p>
-                    <p className="EndResult-def">1. {(def) ? def[0] : 'definition not available'} </p>
-                    {(def) ? (<div className='more-def'>{moreDef}</div>) : null} */}
-                    {/* // </div> */}
-                </>
-            )
-        }
-    }
-    const definitions = () => {
-        let moreDef;
-        if (def) {
-            // moreDef = (def.length > 1) ? (
-            //     def.filter((el, i) => i > 0).map((el, i) => <p key={i}>{i + 2}.  {el}</p>)
-            // ) : <p style={{ textAlign: 'center' }}>Only one definition available</p>;
-            if (def.length > 1) {
-                moreDef = def.filter((el, i) => i > 0).map((el, i) => <p key={i}>{i + 2}.  {el}</p>)
-            }
-        }
-        // if (isWinner || lostGame) {
-        if (moreDef && (isWinner || lostGame)) {
-            // if (moreDef) {
-            return (
-                <div style={{ marginTop: '3rem' }}>
-                    <hr />
-                    <p style={{ fontWeight: 400 }}>More definitions of {answer}:</p>
-                    {/* <p className="EndResult-def">1. {(def) ? def[0] : 'definition not available'} </p> */}
-                    <p className="EndResult-def">1. {def[0]} </p>
-                    {(def) ? (<div className='more-def'>{moreDef}</div>) : null}
                 </div>
             )
         }
-
     }
 
+    // Render definitions at the end of the game (if available)
+    const definitions = () => {
+        if (def && def.length > 1 && (isWinner || lostGame)) {
+            const allDefinitions = def.map((el, i) => <p key={i}>{i + 1}.  {el}</p>)
 
-    let capConstraint = constraint.charAt(0).toUpperCase() + constraint.slice(1);
+            return (
+                <section className={classes.definitionsAtEndGame}>
+                    <hr />
+                    <p>More definitions of {answer}:</p>
+                    <div>{allDefinitions}</div>
+                </section>
+            )
+        }
+    }
 
-    // Generate (buttons)
-    let generateBtns = (
-        // <div style={{ marginTop: '2rem' }}>
-        <Buttons guessed={guessedLtr} handleGuess={handleGuessClick} answer={answer} isWinner={isWinner} />
-        // </div>
-    )
-    let generateInput = (
-        <TextField id="filled-basic" label="Type a letter" variant="filled"
-            classes={{ root: classes.textField }}
-            onKeyDown={handleGuessKey} autoComplete='off'
-            placeholder={!guessedLtr.size ? '' : [...guessedLtr].pop()}
-        />
-        // {/* <TextField id="standard-basic" label="Type a letter" classes={{ root: classes.textField }} onKeyDown={handleGuessKey} autoComplete='off' /> */}
-    )
+    // Capitalize constraints (relate, topics) -> (Relate, Topics)
+    let capitalizedConstraint = constraint.charAt(0).toUpperCase() + constraint.slice(1);
 
     return (
         <div className={classes.root} >
-            <MainDrawer maxWrong={maxWrong} changeMaxWrong={changeMaxWrong} name={name} changeName={changeName}>
-                {/* Height from useHeightAnimHook. Function genBg(numOfStripes, minSaturation, maxSaturation) */}
-                <div className={classes.container} style={{ background: genBackground(8, 20, 35), height }} >
+            <MainDrawer>
+                {/* Height from useHeightAnimHook. Background from genBackground() */}
+                <div className={classes.mainContainer} style={{ background, height }} >
                     <header className={classes.headerContainer}>
                         <h1 className='title'>Guess The Word</h1>
-                        <p>Guessed wrong:
+                        <p>Guessed <span>wrong</span>:
                             <span>{`${nWrong} / ${maxWrong}`}</span>
                         </p>
                     </header>
-                    {/* ref from useHeightAnimHook (used to determine height content ) */}
+                    {/* ref from useHeightAnimHook (used to determine height of the content ) */}
                     <div ref={ref} className={classes.main}>
-                        <div>
-                            {/* <img className='left' src={images[nWrong]} alt={altText} /> */}
-                            {/* <div className={`right ${(lostGame || isWinner) ? 'transWidthShort' : 'transWidthLong'}`}> */}
-                            <p className='category'>{constraint === 'ml' ? <strong>Relate</strong> : <strong>{capConstraint}</strong>}: {category.toUpperCase()} ({tags})</p>
 
-                            {/* {String(def).substring(0, 1200)} */}
+                        <section>
+                            <p className='category'>
+                                {constraint === 'ml' ?
+                                    <strong>Relate</strong> : <strong>{capitalizedConstraint}</strong>}: {category.toUpperCase()} ({tags})
+                            </p>
+
+                            {/* {Restrain for too long defitions} */}
                             {def[0].length < 2000 ? def[0] : def[0].substring(0, 2000) + '...'}
+                        </section>
 
-                            {/* {console.log(fetchedData)} */}
-                            {/* {(lostGame || isWinner) ? endResult() : genBtnsInput} */}
-                            {generateBtns}
-                            <div className='input' style={{
-                                textAlign: 'center',
-                                margin: '2rem 0',
-                                maxWidth: '75rem',
-                            }}>
-                                <p className='word'
-                                    style={{ letterSpacing: '2rem', textTransform: 'uppercase', marginBottom: '2rem', fontFamily: 'Montserrat', fontWeight: '300' }}
-                                // style={{ letterSpacing: '2rem', textTransform: 'uppercase', marginBottom: '2rem' }}
-                                >{guessedWord()}</p>
-                                {generateInput}
-                            </div>
-                            <div className="hint-msg">
+                        <section className='centeredSection'>
+                            <Buttons guessed={guessedLtr} handleGuess={handleGuessClick} answer={answer} isWinner={isWinner} />
+                            <p className='guessedWord'>{guessedWord}</p>
+                            <TextField id="filled-basic" label="Type a letter" variant="filled"
+                                classes={{ root: classes.textField }}
+                                onKeyDown={handleGuessKey} autoComplete='off'
+                                placeholder={!guessedLtr.size ? '' : [...guessedLtr].pop()}
+                            />
+                        </section>
 
-                                {/* {(msg.includes(' message ')) && <p className='description'>Click 'Left', 'Right' or 'Hint' button to display more messages. Hover over each message to get more description.</p>} */}
-                                <div className="msg" style={{ padding: '10px' }}><strong>Message:</strong>
-                                    {(lostGame || isWinner) ? endResult() :
-                                        <span style={{ fontStyle: 'italic' }} > {msg}</span>
-                                    }
-                                </div>
+                        <section>
+                            <div className={classes.message}><strong>Message:</strong>
+                                {(lostGame || isWinner) ?
+                                    endResult() : <span> {msg} </span>
+                                }
                             </div>
-                            <div
-                                className={classes.buttonsContainer}
-                                style={{ maxWidth: '75rem', textAlign: 'center' }}
-                            >
-                                <CustomTooltip title='Common words that appear immediately to the left of the target word' isDisabled={isWinner || lostGame || disabled.left}>
-                                    <span><button onClick={handleLeft} disabled={isWinner || lostGame || disabled.left}>Left</button></span>
-                                </CustomTooltip>
-                                <CustomTooltip title='Show number of syllables' isDisabled={isWinner || lostGame || disabled.syllables}>
-                                    <span><button onClick={handleSyllables} disabled={isWinner || lostGame || disabled.syllables}>Syllables</button></span>
-                                </CustomTooltip>
-                                <CustomTooltip title='Common words that appear immediately to the right of the target word' isDisabled={isWinner || lostGame || disabled.right}>
-                                    <span><button onClick={handleRight} disabled={isWinner || lostGame || disabled.right}>Right</button></span>
-                                </CustomTooltip>
-                                <button className='btn next' onClick={handleRestart}
-                                    style={{ margin: '1rem 4rem' }}
-                                >
-                                    Next</button>
-                            </div>
-                            {definitions()}
-                        </div>
+                        </section>
+
+                        <section
+                            className={classes.buttonsContainer}>
+                            <CustomTooltip title='Common words that appear immediately to the left of the target word' isDisabled={isWinner || lostGame || disabled.left}>
+                                <span><button onClick={handleLeft} disabled={isWinner || lostGame || disabled.left}>&#8636; Left</button></span>
+                            </CustomTooltip>
+                            <CustomTooltip title='Show number of syllables' isDisabled={isWinner || lostGame || disabled.syllables}>
+                                <span><button onClick={handleSyllables} disabled={isWinner || lostGame || disabled.syllables}>Syllables</button></span>
+                            </CustomTooltip>
+                            <CustomTooltip title='Common words that appear immediately to the right of the target word' isDisabled={isWinner || lostGame || disabled.right}>
+                                <span><button onClick={handleRight} disabled={isWinner || lostGame || disabled.right}>Right &#8640;</button></span>
+                            </CustomTooltip>
+                            <button className='btn-next' onClick={handleRestart}>
+                                Next</button>
+                        </section>
+                        {definitions()}
                     </div>
                 </div>
             </MainDrawer>
