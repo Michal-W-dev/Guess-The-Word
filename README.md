@@ -11,6 +11,9 @@ State management - `Context`\
 Styling - `Material UI, JSS`
 
 ## Images
-<img src="public/images/hints.jpg" width="750px">
-<img src="public/images/setting.jpg" width="750px">
-<img src="public/images/correct-answer.jpg" width="750px">
+![hints](public/images/hints.jpg)
+#
+![setting](public/images/setting.jpg)
+#
+![correct-answer](public/images/correct-answer.jpg)
+#
