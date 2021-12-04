@@ -1,4 +1,6 @@
-const styles = {
+import { createStyles } from '@material-ui/core';
+
+const styles = () => createStyles({
     dialog: {
         borderTop: '2px solid #3f51b5',
         borderBottom: '2px solid #3f51b5',
@@ -9,7 +11,7 @@ const styles = {
         }
     },
     formTitle: {
-        fontWeight: '400',
+        fontWeight: 400,
         fontSize: '2.1rem',
         marginBottom: '0.9rem'
     },
@@ -61,6 +63,6 @@ const styles = {
         width: '100%',
         backgroundColor: '#3f51b5',
     }
-}
+})
 
 export default styles;

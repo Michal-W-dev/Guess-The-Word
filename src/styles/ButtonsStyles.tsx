@@ -1,6 +1,7 @@
+import { createStyles } from '@material-ui/core';
 import sizes from './sizes'
 
-const styles = {
+const styles = () => createStyles({
     root: {
         marginTop: '2.5rem',
     },
@@ -67,6 +68,6 @@ const styles = {
             },
         },
     },
-}
+})
 
 export default styles;

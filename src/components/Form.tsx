@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect, useContext, FC, ChangeEvent, MouseEvent, FormEvent } from 'react'
 import { OptionsContext } from '../context/options.context';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
@@ -9,7 +9,7 @@ import Tab from '@material-ui/core/Tab';
 import Slider from '@material-ui/core/Slider';
 import clsx from 'clsx';
 import TabPanel from './TabPanel';
-import { withStyles } from "@material-ui/core/styles";
+import { withStyles, WithStyles } from "@material-ui/core/styles";
 import styles from '../styles/FormStyles'
 
 const marks = [
@@ -22,33 +22,39 @@ const marks = [
     { value: 7, label: '7°' },
 ];
 
-const Form = ({ classes, showForm, closeForm }) => {
+interface Props extends WithStyles<typeof styles> {
+    showForm: { show: boolean, tabIndex: number },
+    closeForm: (data: { tabIndex: number }) => void,
+};
+
+const Form: FC<Props> = ({ classes, showForm, closeForm }) => {
     const { show, tabIndex } = showForm;
     const { maxWrong, changeMaxWrong, name, changeName } = useContext(OptionsContext)
 
     //Tabs
-    const [value, setValue] = useState();
+    const [value, setValue] = useState(0);
     //Forms
     const [inputText, setInputText] = useState(name)
     const [sliderValue, setSliderValue] = useState(maxWrong)
 
+    // console.log('tabIndex ', typeof tabIndex);
 
-    const handleTabChange = (evt, newValue) => setValue(newValue)
+    const handleTabChange = (evt: ChangeEvent<{}>, newValue: number) => setValue(newValue)
 
     useEffect(() => { setValue(tabIndex) }, [tabIndex])
 
-    const handleSubmit = (evt) => {
+    const handleSubmit = (evt: FormEvent) => {
         evt.preventDefault()
         closeForm({ tabIndex: value })
         changeName(inputText)
         changeMaxWrong(sliderValue)
     }
 
-    const handleTextChange = (evt) => setInputText(evt.target.value)
+    const handleTextChange = (evt: ChangeEvent<HTMLInputElement>) => setInputText(evt.target.value)
 
-    const handleSliderChange = (evt, newValue) => setSliderValue(newValue)
+    const handleSliderChange = (evt: ChangeEvent<{}>, newValue: number | number[]) => setSliderValue(newValue)
 
-    const stopPropagation = (evt) => evt.stopPropagation();
+    const stopPropagation = (evt: MouseEvent<HTMLDivElement | HTMLFormElement>) => evt.stopPropagation();
 
     return (
         <div onClick={() => closeForm({ tabIndex: value })} >

@@ -1,10 +1,11 @@
+import React, { FC } from 'react';
 import './App.css';
 import StartScreen from './screens/StartScreen';
 import GameScreen from './screens/GameScreen';
 import { Route, Switch } from 'react-router-dom';
 import { OptionsProvider } from './context/options.context'
 
-const App = () => {
+const App: FC = () => {
   return (
     <div className="App">
       <OptionsProvider>

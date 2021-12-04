@@ -10,10 +10,12 @@ import useHeightAnimHook from '../hooks/useHeightAnimHook';
 import styles from '../styles/GameScreenStyles'
 
 
+
+
 const GameScreen = ({ classes }) => {
     const { maxWrong } = useContext(OptionsContext)
-    const [nWrong, setNWrong] = useState(0)
-    const [guessedLtr, setGuessedLtr] = useState(new Set())
+    const [numWrong, setNumWrong] = useState(0)
+    const [guessedLtr, setGuessedLtr] = useState(new Set(''))
     const [isWinner, setIsWinner] = useState(false)
     const [lostGame, setLostGame] = useState(false)
 
@@ -73,10 +75,10 @@ const GameScreen = ({ classes }) => {
         if (answer) {
             // Set the game to be lost or won depending on met conditions
             if (guessedWord.join('') === answer) setIsWinner(true)
-            else if (nWrong >= maxWrong) setLostGame(true)
+            else if (numWrong >= maxWrong) setLostGame(true)
             // Fetch data at the start of the game
         } else getData()
-    }, [answer, guessedWord, guessedLtr, nWrong, maxWrong])
+    }, [answer, guessedWord, guessedLtr, numWrong, maxWrong])
 
 
     // Fething hints (most common words appearing to the left or right of the target word).
@@ -123,7 +125,7 @@ const GameScreen = ({ classes }) => {
     const updateStateOnEvent = (letter) => {
         if (!lostGame && !isWinner) {
             setGuessedLtr(prevSt => new Set(prevSt.add(letter)))
-            setNWrong(nWrong + (answer.includes(letter) ? 0 : 1))
+            setNumWrong(numWrong + (answer.includes(letter) ? 0 : 1))
         }
     }
 
@@ -150,7 +152,7 @@ const GameScreen = ({ classes }) => {
     // Reset values at restart (next game)
     const handleRestart = () => {
         getData()
-        setNWrong(0)
+        setNumWrong(0)
         setGuessedLtr(new Set())
         setIsWinner(false)
         setLostGame(false)
@@ -205,7 +207,7 @@ const GameScreen = ({ classes }) => {
                     <header className={classes.headerContainer}>
                         <h1 className='title'>Guess The Word</h1>
                         <p>Guessed <span>wrong</span>:
-                            <span>{`${nWrong} / ${maxWrong}`}</span>
+                            <span>{`${numWrong} / ${maxWrong}`}</span>
                         </p>
                     </header>
                     {/* ref from useHeightAnimHook (used to determine height of the content ) */}

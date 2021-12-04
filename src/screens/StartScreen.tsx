@@ -1,9 +1,11 @@
-import React from 'react'
-import { withStyles } from '@material-ui/core/styles';
+import React, { FC } from 'react'
+import { withStyles, WithStyles } from "@material-ui/core/styles";
+import { History } from 'history';
 import styles from '../styles/StartScreenStyles'
 
+interface Props extends WithStyles<typeof styles> { history: History };
 
-const StartScreen = ({ classes, history }) => {
+const StartScreen: FC<Props> = ({ classes, history }) => {
 
     const handleEndOfAnimation = () => history.push('/game')
 

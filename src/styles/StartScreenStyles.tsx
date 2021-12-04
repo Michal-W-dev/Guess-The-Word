@@ -1,4 +1,6 @@
-const styles = {
+import { createStyles } from '@material-ui/core';
+
+const styles = () => createStyles({
     root: {
         position: 'relative',
         overflow: 'hidden',
@@ -97,6 +99,6 @@ const styles = {
         "45%": { width: '55%' },
         "100%": { width: '97%', transform: 'scale(1)' }
     },
-};
+});
 
 export default styles;

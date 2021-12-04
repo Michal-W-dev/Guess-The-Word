@@ -1,17 +1,24 @@
-import React from 'react'
-import { withStyles } from '@material-ui/core/styles';
+import React, { FC, MouseEvent } from 'react'
+import { withStyles, WithStyles } from '@material-ui/core/styles'
 import clsx from 'clsx';
 import styles from '../styles/ButtonsStyles'
 
 
-const Buttons = ({ guessed, handleGuess, classes, answer, isWinner }) => {
+
+interface Props extends WithStyles<typeof styles> {
+    isWinner: boolean, answer: string, guessed: Set<string>,
+    handleGuess: () => void
+}
+
+const Buttons: FC<Props> = (props) => {
+    const { guessed, handleGuess, classes, answer, isWinner } = props;
 
     // Change size of displayed buttons, depending of how long the answer is
     const sizeOfButtons = () => (
         answer.length < 7 ? 19 :
             answer.length < 11 ? 16 : 14
     )
-    const handleAnswerClick = (evt) => evt.target.disabled = true
+    const handleAnswerClick = (evt: MouseEvent) => (evt.target as HTMLButtonElement).disabled = true
 
     // Render animated correct answer (displayed if player guessed all correct letters)
     const renderAnswerWord = () => {

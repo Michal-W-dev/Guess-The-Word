@@ -1,9 +1,12 @@
 import { useState, useEffect, useRef } from 'react';
 
 
+
 const useHeightAnimHook = (fetchedData, isWinner, lostGame) => {
+    // const useHeightAnimHook = (fetchedData: any, isWinner: boolean, lostGame: boolean): [number, React.RefObject<HTMLDivElement>] => {
     const [height, setHeight] = useState(90)
-    const ref = useRef(null)
+    const ref = useRef()
+    // const ref = useRef<HTMLDivElement | any>(null)
 
     // Update height if (fetchedData, isWinner, lostGame)
     useEffect(() => {

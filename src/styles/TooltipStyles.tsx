@@ -1,4 +1,6 @@
-const styles = {
+import { createStyles } from '@material-ui/core';
+
+const styles = () => createStyles({
     tooltip: {
         backgroundColor: 'rgba(41, 73, 255, 0.8)',
         fontSize: '1.5rem',
@@ -26,6 +28,6 @@ const styles = {
             transform: 'translateY(14px)'
         },
     },
-}
+})
 
 export default styles

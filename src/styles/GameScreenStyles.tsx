@@ -1,6 +1,7 @@
+import { createStyles } from '@material-ui/core';
 import sizes from './sizes'
 
-const styles = {
+const styles = () => createStyles({
     root: {
         margin: '0 auto',
     },
@@ -189,6 +190,6 @@ const styles = {
             fontWeight: 400
         }
     }
-}
+})
 
 export default styles;

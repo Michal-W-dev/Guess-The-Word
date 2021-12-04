@@ -1,13 +1,17 @@
-import React, { useState } from 'react'
+import React, { FC, useState } from 'react'
 import Tooltip from '@material-ui/core/Tooltip';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, WithStyles } from '@material-ui/core/styles';
 import styles from '../styles/TooltipStyles'
 
-const CustomTooltip = (props) => {
+interface Props extends WithStyles<typeof styles> {
+    title: string, isDisabled: boolean,
+}
+
+const CustomTooltip: FC<Props> = (props) => {
     const { classes, title, children, isDisabled, ...otherProps } = props;
 
     const [tooltipOpen, setTooltipOpen] = useState(false)
-    const handleTooltip = bool => setTooltipOpen(bool)
+    const handleTooltip = (bool: boolean) => setTooltipOpen(bool)
 
     return (
         <Tooltip
@@ -20,7 +24,7 @@ const CustomTooltip = (props) => {
             placement="bottom"
             classes={{ tooltip: classes.tooltip, arrow: classes.tooltipArrow }}
             {...otherProps}
-        >{children}
+        ><>{children}</>
         </Tooltip>
     )
 }

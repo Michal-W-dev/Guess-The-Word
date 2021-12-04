@@ -1,7 +1,7 @@
-import React, { useState, useContext } from 'react';
+import React, { FC, useState, useContext } from 'react';
 import { OptionsContext } from '../context/options.context';
 import clsx from 'clsx';
-import { withStyles, useTheme } from '@material-ui/core/styles';
+import { withStyles, useTheme, WithStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -25,7 +25,11 @@ import Icon1 from '@material-ui/icons/LooksOneOutlined';
 import Form from './Form'
 import styles from '../styles/MainDrawerStyles'
 
-const MainDrawer = ({ classes, children, changeMaxWrong }) => {
+
+interface Props extends WithStyles<typeof styles> { };
+interface ShowingForm { show?: boolean, tabIndex: number };
+
+const MainDrawer: FC<Props> = ({ classes, children }) => {
     const theme = useTheme();
     const { maxWrong, name } = useContext(OptionsContext)
 
@@ -34,7 +38,7 @@ const MainDrawer = ({ classes, children, changeMaxWrong }) => {
 
     const handleDrawerOpen = () => setOpen(true);
     const handleDrawerClose = () => setOpen(false);
-    const handleShowingForm = ({ show = false, tabIndex }) => setShowForm({ show, tabIndex })
+    const handleShowingForm = ({ show = false, tabIndex }: ShowingForm) => setShowForm({ show, tabIndex })
 
 
     const renderNumber = () => (
@@ -50,7 +54,7 @@ const MainDrawer = ({ classes, children, changeMaxWrong }) => {
         <div className={classes.root}>
             <Form
                 showForm={showForm}
-                changeDifficulty={changeMaxWrong}
+                // changeDifficulty={changeMaxWrong}
                 closeForm={handleShowingForm}
             />
             <AppBar
@@ -112,4 +116,4 @@ const MainDrawer = ({ classes, children, changeMaxWrong }) => {
     );
 }
 
-export default withStyles(styles, { widthTheme: true })(MainDrawer)
+export default withStyles(styles)(MainDrawer)

@@ -1,8 +1,11 @@
+import { createStyles, Theme } from '@material-ui/core';
 import sizes from './sizes'
 
 const drawerWidth = 240;
 
-const styles = theme => ({
+// const styles: {} = (theme: any) => ({
+const styles = (theme: Theme) => createStyles({
+
     root: {
         display: 'flex',
         overflow: 'hidden'

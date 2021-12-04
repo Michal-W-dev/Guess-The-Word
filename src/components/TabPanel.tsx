@@ -1,4 +1,6 @@
-const TabPanel = ({ children, value, index }) => (
+import React, { FC } from 'react';
+
+const TabPanel: FC<{ value: number, index: number }> = ({ children, value, index }) => (
     <div
         role="tabpanel"
         hidden={value !== index}
