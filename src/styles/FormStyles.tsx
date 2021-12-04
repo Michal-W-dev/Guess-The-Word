@@ -7,21 +7,23 @@ const styles = () => createStyles({
         // Avoid showing scroll at form animation
         '& #tabpanel-1': { overflowX: 'hidden' },
         '& .tab': {
-            fontSize: '1.4rem'
+            fontSize: '1.4em'
         }
     },
     formTitle: {
         fontWeight: 400,
-        fontSize: '2.1rem',
+        fontSize: '2rem',
         marginBottom: '0.9rem'
     },
     form: {
-        width: '100%',
+        // width: '100%',
+        width: '39rem',
+        height: '17rem',
         padding: '2rem',
         borderRadius: '5px',
         '& input': {
-            width: '20rem',
-            fontSize: '1.8rem',
+            width: '32rem',
+            fontSize: '1.75rem',
         },
         '& .btns-container': {
             textAlign: 'right',

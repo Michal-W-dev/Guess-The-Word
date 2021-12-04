@@ -1,7 +1,8 @@
 import React, { FC } from 'react'
-import { withStyles, WithStyles } from "@material-ui/core/styles";
+import { withStyles, WithStyles } from "@mui/styles";
 import { History } from 'history';
 import styles from '../styles/StartScreenStyles'
+
 
 interface Props extends WithStyles<typeof styles> { history: History };
 

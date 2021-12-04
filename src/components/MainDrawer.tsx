@@ -1,27 +1,27 @@
 import React, { FC, useState, useContext } from 'react';
 import { OptionsContext } from '../context/options.context';
 import clsx from 'clsx';
-import { withStyles, useTheme, WithStyles } from '@material-ui/core/styles';
-import Drawer from '@material-ui/core/Drawer';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import List from '@material-ui/core/List';
-import Divider from '@material-ui/core/Divider';
-import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import FaceIcon from '@material-ui/icons/Face';
-import Icon7 from '@material-ui/icons/Filter7Outlined';
-import Icon6 from '@material-ui/icons/Looks6Outlined';
-import Icon5 from '@material-ui/icons/Looks5Outlined';
-import Icon4 from '@material-ui/icons/Looks4Outlined';
-import Icon3 from '@material-ui/icons/Looks3Outlined';
-import Icon2 from '@material-ui/icons/LooksTwoOutlined';
-import Icon1 from '@material-ui/icons/LooksOneOutlined';
+import { withStyles, WithStyles, useTheme } from '@material-ui/core/styles';
+import Drawer from '@mui/material/Drawer';
+import AppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
+import List from '@mui/material/List';
+import Divider from '@mui/material/Divider';
+import IconButton from '@mui/material/IconButton';
+import MenuIcon from '@mui/icons-material/Menu';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import ListItem from '@mui/material/ListItem';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import FaceIcon from '@mui/icons-material/Face';
+import Icon7 from '@mui/icons-material/Filter7Outlined';
+import Icon6 from '@mui/icons-material/Looks6Outlined';
+import Icon5 from '@mui/icons-material/Looks5Outlined';
+import Icon4 from '@mui/icons-material/Looks4Outlined';
+import Icon3 from '@mui/icons-material/Looks3Outlined';
+import Icon2 from '@mui/icons-material/LooksTwoOutlined';
+import Icon1 from '@mui/icons-material/LooksOneOutlined';
 import Form from './Form'
 import styles from '../styles/MainDrawerStyles'
 

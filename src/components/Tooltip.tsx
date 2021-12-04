@@ -1,10 +1,11 @@
 import React, { FC, useState } from 'react'
-import Tooltip from '@material-ui/core/Tooltip';
-import { withStyles, WithStyles } from '@material-ui/core/styles';
+import Tooltip from '@mui/material/Tooltip';
+import { withStyles, WithStyles } from '@mui/styles';
 import styles from '../styles/TooltipStyles'
 
 interface Props extends WithStyles<typeof styles> {
     title: string, isDisabled: boolean,
+    classes: any
 }
 
 const CustomTooltip: FC<Props> = (props) => {

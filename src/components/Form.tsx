@@ -1,15 +1,15 @@
 import React, { useState, useEffect, useContext, FC, ChangeEvent, MouseEvent, FormEvent } from 'react'
 import { OptionsContext } from '../context/options.context';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import TextField from '@material-ui/core/TextField';
-import Paper from '@material-ui/core/Paper';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import Slider from '@material-ui/core/Slider';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import TextField from '@mui/material/TextField';
+import Paper from '@mui/material/Paper';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+import Slider from '@mui/material/Slider';
 import clsx from 'clsx';
 import TabPanel from './TabPanel';
-import { withStyles, WithStyles } from "@material-ui/core/styles";
+import { withStyles, WithStyles } from "@mui/styles";
 import styles from '../styles/FormStyles'
 
 const marks = [
@@ -52,7 +52,7 @@ const Form: FC<Props> = ({ classes, showForm, closeForm }) => {
 
     const handleTextChange = (evt: ChangeEvent<HTMLInputElement>) => setInputText(evt.target.value)
 
-    const handleSliderChange = (evt: ChangeEvent<{}>, newValue: number | number[]) => setSliderValue(newValue)
+    const handleSliderChange = (evt: Event, newValue: number | number[], activeThumb: number) => setSliderValue(newValue)
 
     const stopPropagation = (evt: MouseEvent<HTMLDivElement | HTMLFormElement>) => evt.stopPropagation();
 

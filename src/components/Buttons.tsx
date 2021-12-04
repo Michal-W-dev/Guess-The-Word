@@ -1,5 +1,5 @@
 import React, { FC, MouseEvent } from 'react'
-import { withStyles, WithStyles } from '@material-ui/core/styles'
+import { withStyles, WithStyles } from '@mui/styles'
 import clsx from 'clsx';
 import styles from '../styles/ButtonsStyles'
 
