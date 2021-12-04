@@ -1,18 +1,18 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import './App.css';
 import StartScreen from './screens/StartScreen';
 import GameScreen from './screens/GameScreen';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import { OptionsProvider } from './context/options.context'
 
 const App: FC = () => {
   return (
     <div className="App">
       <OptionsProvider>
-        <Switch>
-          <Route exact path='/' component={StartScreen} />
-          <Route exact path='/game' component={GameScreen} />
-        </Switch>
+        <Routes>
+          <Route path='/' element={<StartScreen />} />
+          <Route path='/game' element={<GameScreen />} />
+        </Routes>
       </OptionsProvider>
     </div>
   );

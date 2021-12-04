@@ -1,14 +1,15 @@
-import React, { FC } from 'react'
+import { FC } from 'react'
 import { withStyles, WithStyles } from "@mui/styles";
-import { History } from 'history';
+import { useNavigate } from "react-router-dom";
 import styles from '../styles/StartScreenStyles'
 
 
-interface Props extends WithStyles<typeof styles> { history: History };
+interface Props extends WithStyles<typeof styles> { };
 
-const StartScreen: FC<Props> = ({ classes, history }) => {
+const StartScreen: FC<Props> = ({ classes }) => {
 
-    const handleEndOfAnimation = () => history.push('/game')
+    let navigate = useNavigate();
+    const handleEndOfAnimation = () => navigate('/game')
 
     return (
         <div className={classes.root}>
