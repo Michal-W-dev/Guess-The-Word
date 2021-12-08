@@ -6,20 +6,21 @@ vacation, country
 const arrCategory = strCategory.split(',').map(el => el.trim())
 const arrConstraint = ['ml', 'topics']
 
-const random = (arr) => arr[Math.floor(Math.random() * arr.length)];
+
+const random = <S, O>(arr: S[] | O[]) => arr[Math.floor(Math.random() * arr.length)];
 
 // Generate Guessed Word
-const genGuessedWord = (answer, guessedLetters) => (
+const genGuessedWord = (answer: string, guessedLetters: Set<string>) => (
     answer.split('').map(letter => guessedLetters.has(letter) ? letter : '_')
 )
 
 // Generate linear-gradient Background
-const genBackground = (arrLength, topSatur, lowSatur) => {
-    const randPercArr = Array(arrLength).fill().map((_, idx) => (
+const genBackground = <N extends number>(arrLength: N, topSatur: N, lowSatur: N): string => {
+    const randPercArr = Array(arrLength).fill(0).map((_, idx) => (
         idx * (100 / arrLength) + Math.ceil(Math.random() * (100 / arrLength))
     ))
 
-    const linearBackground = Array(arrLength).fill().map((_, idx) => {
+    const linearBackground = Array(arrLength).fill(0).map((_, idx) => {
         const nextPercent = idx % 2 ? randPercArr[idx - 1] : randPercArr[idx]
         // Random saturation from 0 to 100
         const randSaturation = Math.ceil(Math.random() * (topSatur - lowSatur)) + lowSatur

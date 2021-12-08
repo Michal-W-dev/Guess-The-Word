@@ -5,6 +5,7 @@ import GameScreen from './screens/GameScreen';
 import { Route, Routes } from 'react-router-dom';
 import { OptionsProvider } from './context/options.context'
 
+
 const App: FC = () => {
   return (
     <div className="App">

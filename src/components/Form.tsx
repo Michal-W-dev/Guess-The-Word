@@ -1,16 +1,14 @@
-import React, { useState, useEffect, useContext, FC, ChangeEvent, MouseEvent, FormEvent } from 'react'
+import { useState, useEffect, useContext, FC, ChangeEvent, MouseEvent, FormEvent } from 'react'
 import { OptionsContext } from '../context/options.context';
 import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
 import TextField from '@mui/material/TextField';
 import Paper from '@mui/material/Paper';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Slider from '@mui/material/Slider';
-import clsx from 'clsx';
 import TabPanel from './TabPanel';
-import { withStyles, WithStyles } from "@mui/styles";
-import styles from '../styles/FormStyles'
+import { StyledRootDiv, StyledDialog } from '../styles/FormStyles';
+
 
 const marks = [
     { value: 1, label: '1°' },
@@ -22,12 +20,13 @@ const marks = [
     { value: 7, label: '7°' },
 ];
 
-interface Props extends WithStyles<typeof styles> {
+interface Props {
     showForm: { show: boolean, tabIndex: number },
     closeForm: (data: { tabIndex: number }) => void,
 };
 
-const Form: FC<Props> = ({ classes, showForm, closeForm }) => {
+
+const Form: FC<Props> = ({ showForm, closeForm }) => {
     const { show, tabIndex } = showForm;
     const { maxWrong, changeMaxWrong, name, changeName } = useContext(OptionsContext)
 
@@ -37,7 +36,6 @@ const Form: FC<Props> = ({ classes, showForm, closeForm }) => {
     const [inputText, setInputText] = useState(name)
     const [sliderValue, setSliderValue] = useState(maxWrong)
 
-    // console.log('tabIndex ', typeof tabIndex);
 
     const handleTabChange = (evt: ChangeEvent<{}>, newValue: number) => setValue(newValue)
 
@@ -52,95 +50,99 @@ const Form: FC<Props> = ({ classes, showForm, closeForm }) => {
 
     const handleTextChange = (evt: ChangeEvent<HTMLInputElement>) => setInputText(evt.target.value)
 
-    const handleSliderChange = (evt: Event, newValue: number | number[], activeThumb: number) => setSliderValue(newValue)
+    const handleSliderChange = (evt: Event, value: number | number[]) => {
+        if (typeof value === 'number') setSliderValue(value)
+    }
 
     const stopPropagation = (evt: MouseEvent<HTMLDivElement | HTMLFormElement>) => evt.stopPropagation();
 
     return (
-        <div onClick={() => closeForm({ tabIndex: value })} >
-            <Dialog open={show} className={classes.dialog}>
-                <Paper square onClick={stopPropagation}>
-                    <Tabs
-                        value={value}
-                        indicatorColor="primary"
-                        textColor="primary"
-                        onChange={handleTabChange}
-                        aria-label="options tabs"
-                    >
-                        <Tab className='tab' label="Set Name" />
-                        <Tab className='tab' label="Set Difficulty" />
-                        <Tab className='tab' label=" " disabled />
-                    </Tabs>
-                </Paper>
-                <TabPanel value={value} index={0} >
-                    <form
-                        className={clsx(classes.form, 'slideLeft')}
-                        noValidate
-                        autoComplete="off"
-                        onClick={stopPropagation}
-                        onSubmit={handleSubmit}
-                    >
-                        <h1 className={classes.formTitle}>Enter your name</h1>
-                        <TextField
-                            onChange={handleTextChange}
-                            label="Player name"
-                            inputRef={input => input && input.focus()}
-                            value={inputText}
-                        />
-                        <div className='btns-container'>
-                            <Button
-                                color='primary'
-                                onClick={() => closeForm({ tabIndex: value })}
-                            > Cancel
-                            </Button>
-                            <Button
-                                type='submit'
-                                variant="contained"
-                                color='primary'>
-                                Save Name
-                            </Button>
-                        </div>
-                    </form>
-                    <footer className={classes.bottomBorder} />
-                </TabPanel>
-                <TabPanel value={value} index={1} >
-                    <form
-                        className={clsx(classes.form, 'slideRight')}
-                        noValidate
-                        autoComplete="off"
-                        onClick={stopPropagation}
-                        onSubmit={handleSubmit}
-                    >
-                        <h1 className={classes.formTitle}>Number of attemps</h1>
-                        <Slider
-                            defaultValue={3}
-                            aria-labelledby="discrete-slider-custom"
-                            step={1}
-                            min={1}
-                            max={7}
-                            valueLabelDisplay="auto"
-                            onChange={handleSliderChange}
-                            value={sliderValue}
-                            marks={marks}
-                        />
-                        <div className='btns-container'>
-                            <Button
-                                color='primary'
-                                onClick={() => closeForm({ tabIndex: value })}
-                            > Cancel
-                            </Button>
-                            <Button
-                                type='submit'
-                                variant="contained"
-                                color='primary'>
-                                Save Name
-                            </Button>
-                        </div>
-                    </form>
-                    <footer className={classes.bottomBorder} />
-                </TabPanel>
-            </Dialog>
-        </div >
+        <div className='Form' onClick={() => closeForm({ tabIndex: value })}>
+            <StyledDialog open={show} className='dialog'>
+                <StyledRootDiv>
+                    <Paper square onClick={stopPropagation}>
+                        <Tabs
+                            value={value}
+                            indicatorColor="primary"
+                            textColor="primary"
+                            onChange={handleTabChange}
+                            aria-label="options tabs"
+                        >
+                            <Tab className='tab' label="Set Name" />
+                            <Tab className='tab' label="Set Difficulty" />
+                            <Tab className='tab' label=" " disabled />
+                        </Tabs>
+                    </Paper>
+                    <TabPanel value={value} index={0} >
+                        <form
+                            className='form slideLeft'
+                            noValidate
+                            autoComplete="off"
+                            onClick={stopPropagation}
+                            onSubmit={handleSubmit}
+                        >
+                            <h1 className='formTitle'>Enter your name</h1>
+                            <TextField
+                                onChange={handleTextChange}
+                                label="Player name"
+                                inputRef={input => input && input.focus()}
+                                value={inputText}
+                            />
+                            <div className='btns-container'>
+                                <Button
+                                    color='primary'
+                                    onClick={() => closeForm({ tabIndex: value })}
+                                > Cancel
+                                </Button>
+                                <Button
+                                    type='submit'
+                                    variant="contained"
+                                    color='primary'>
+                                    Save Name
+                                </Button>
+                            </div>
+                        </form>
+                        <footer className='bottomBorder' />
+                    </TabPanel>
+                    <TabPanel value={value} index={1} >
+                        <form
+                            className='form slideRight'
+                            noValidate
+                            autoComplete="off"
+                            onClick={stopPropagation}
+                            onSubmit={handleSubmit}
+                        >
+                            <h1 className='formTitle'>Number of attemps</h1>
+                            <Slider
+                                defaultValue={3}
+                                aria-labelledby="discrete-slider-custom"
+                                step={1}
+                                min={1}
+                                max={7}
+                                valueLabelDisplay="auto"
+                                onChange={handleSliderChange}
+                                value={sliderValue}
+                                marks={marks}
+                            />
+                            <div className='btns-container'>
+                                <Button
+                                    color='primary'
+                                    onClick={() => closeForm({ tabIndex: value })}
+                                > Cancel
+                                </Button>
+                                <Button
+                                    type='submit'
+                                    variant="contained"
+                                    color='primary'>
+                                    Save Name
+                                </Button>
+                            </div>
+                        </form>
+                        <footer className='bottomBorder' />
+                    </TabPanel>
+                </StyledRootDiv>
+            </StyledDialog>
+        </div>
     )
 }
-export default withStyles(styles)(Form);
+export default Form;

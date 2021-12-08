@@ -6,9 +6,9 @@ A simple app to improve ones english vocabulary. You can make guesses, look for 
 
 ## App development
 
-Main technology - `React`\
+Main technology - `TypeScript, React`\
 State management - `Context`\
-Styling - `Material UI, JSS`
+Styling - `Material UI, Styled-Components`
 
 ## Images
 ![hints](public/images/hints.jpg)

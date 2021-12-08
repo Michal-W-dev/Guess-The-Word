@@ -1,18 +1,23 @@
-import React, { useState, useEffect, useContext } from 'react'
+import { useState, useEffect, useContext, KeyboardEvent, MouseEvent } from 'react'
 import { OptionsContext } from '../context/options.context';
-import { withStyles } from '@material-ui/core/styles';
 import Buttons from '../components/Buttons'
 import MainDrawer from '../components/MainDrawer'
 import { arrCategory, arrConstraint, random, genBackground, genGuessedWord } from "../utils"
-import TextField from '@material-ui/core/TextField';
+import TextField from '@mui/material/TextField';
 import CustomTooltip from '../components/Tooltip'
 import useHeightAnimHook from '../hooks/useHeightAnimHook';
-import styles from '../styles/GameScreenStyles'
+import { StyledRootDiv } from '../styles/GameScreenStyles'
 
 
+interface FechedData {
+    word: string,
+    defs: string[],
+    numSyllables: number,
+    tags: string[]
+}
 
 
-const GameScreen = ({ classes }) => {
+const GameScreen = () => {
     const { maxWrong } = useContext(OptionsContext)
     const [numWrong, setNumWrong] = useState(0)
     const [guessedLtr, setGuessedLtr] = useState(new Set(''))
@@ -32,7 +37,7 @@ const GameScreen = ({ classes }) => {
         constraint: 'null',
         category: 'null',
         tags: 'part-of-speech',
-        def: '-',
+        def: [''],
         numSyllables: 0
     })
 
@@ -52,7 +57,7 @@ const GameScreen = ({ classes }) => {
         return fetch(`https://api.datamuse.com/words?${constraint}=${category}&max=30&md=dps`)
             .then(res => res.json())
             .then(data => {
-                let rand;
+                let rand: FechedData;
                 do {
                     rand = random(data)
                 } while (rand.word.length < 5 || rand.word.length > 16)
@@ -83,17 +88,16 @@ const GameScreen = ({ classes }) => {
 
     // Fething hints (most common words appearing to the left or right of the target word).
     // - data cannot be taken from initial fetch
-    const fetchHint = (direction, max) => {
+    const fetchHint = (direction: string, max: number) => {
         // max - fetch no more than top (max) results e.g. fetch no more than 20 first results
         const context = (direction === 'left') ? 'rc' : 'lc';
         fetch(`https://api.datamuse.com/words?${context}=${answer}&max=${max}`)
             .then(res => res.json())
             .then(data => {
-                console.log(data, random(data));
                 const nums = new Set();
                 let count = 0;
                 do {
-                    let randWord = random(data).word
+                    let randWord = (random(data) as FechedData).word
                     if (randWord.length > 4) {
                         nums.add(randWord)
                     }
@@ -122,7 +126,7 @@ const GameScreen = ({ classes }) => {
     }
 
 
-    const updateStateOnEvent = (letter) => {
+    const updateStateOnEvent = (letter: string) => {
         if (!lostGame && !isWinner) {
             setGuessedLtr(prevSt => new Set(prevSt.add(letter)))
             setNumWrong(numWrong + (answer.includes(letter) ? 0 : 1))
@@ -130,24 +134,23 @@ const GameScreen = ({ classes }) => {
     }
 
     // Handle mouse events
-    const handleGuessClick = (evt) => {
-        let letter = evt.target.value;
+    const handleGuessClick = (evt: MouseEvent) => {
+        let letter = (evt.target as HTMLButtonElement).value;
         updateStateOnEvent(letter)
     }
 
     // Handle key events 
     // - letters update game state
     // - LEFT & RIGHT arrows fetch the hints
-    const handleGuessKey = (evt) => {
+    const handleGuessKey = (evt: KeyboardEvent) => {
         if (evt.key === 'ArrowLeft') !disabled.left && handleLeft()
         else if (evt.key === 'ArrowRight') !disabled.right && handleRight()
         else {
             let letter = evt.key;
             if (!guessedLtr.has(letter)) updateStateOnEvent(letter)
-            setTimeout(() => evt.target.value = "", 150)
+            setTimeout(() => (evt.target as HTMLInputElement).value = "", 150)
         }
     }
-
 
     // Reset values at restart (next game)
     const handleRestart = () => {
@@ -183,11 +186,11 @@ const GameScreen = ({ classes }) => {
 
     // Render definitions at the end of the game (if available)
     const definitions = () => {
-        if (def && def.length > 1 && (isWinner || lostGame)) {
+        if (def.length > 1 && (isWinner || lostGame)) {
             const allDefinitions = def.map((el, i) => <p key={i}>{i + 1}.  {el}</p>)
 
             return (
-                <section className={classes.definitionsAtEndGame}>
+                <section className='definitionsAtEndGame'>
                     <hr />
                     <p>More definitions of {answer}:</p>
                     <div>{allDefinitions}</div>
@@ -200,18 +203,18 @@ const GameScreen = ({ classes }) => {
     let capitalizedConstraint = constraint.charAt(0).toUpperCase() + constraint.slice(1);
 
     return (
-        <div className={classes.root} >
+        <StyledRootDiv className='root' >
             <MainDrawer>
                 {/* Height from useHeightAnimHook. Background from genBackground() */}
-                <div className={classes.mainContainer} style={{ background, height }} >
-                    <header className={classes.headerContainer}>
+                <div className='mainContainer' style={{ background, height }} >
+                    <header className='headerContainer'>
                         <h1 className='title'>Guess The Word</h1>
                         <p>Guessed <span>wrong</span>:
                             <span>{`${numWrong} / ${maxWrong}`}</span>
                         </p>
                     </header>
                     {/* ref from useHeightAnimHook (used to determine height of the content ) */}
-                    <div ref={ref} className={classes.main}>
+                    <div ref={ref} className='main'>
 
                         <section>
                             <p className='category'>
@@ -227,14 +230,14 @@ const GameScreen = ({ classes }) => {
                             <Buttons guessed={guessedLtr} handleGuess={handleGuessClick} answer={answer} isWinner={isWinner} />
                             <p className='guessedWord'>{guessedWord}</p>
                             <TextField id="filled-basic" label="Type a letter" variant="filled"
-                                classes={{ root: classes.textField }}
+                                classes={{ root: 'textField' }}
                                 onKeyDown={handleGuessKey} autoComplete='off'
                                 placeholder={!guessedLtr.size ? '' : [...guessedLtr].pop()}
                             />
                         </section>
 
                         <section>
-                            <div className={classes.message}><strong>Message:</strong>
+                            <div className='message'><strong>Message:</strong>
                                 {(lostGame || isWinner) ?
                                     endResult() : <span> {msg} </span>
                                 }
@@ -242,7 +245,7 @@ const GameScreen = ({ classes }) => {
                         </section>
 
                         <section
-                            className={classes.buttonsContainer}>
+                            className='buttonsContainer'>
                             <CustomTooltip title='Common words that appear immediately to the left of the target word' isDisabled={isWinner || lostGame || disabled.left}>
                                 <span><button onClick={handleLeft} disabled={isWinner || lostGame || disabled.left}>&#8636; Left</button></span>
                             </CustomTooltip>
@@ -259,8 +262,8 @@ const GameScreen = ({ classes }) => {
                     </div>
                 </div>
             </MainDrawer>
-        </div>
+        </StyledRootDiv>
     )
 }
 
-export default withStyles(styles)(GameScreen);
+export default GameScreen;

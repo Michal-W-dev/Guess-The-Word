@@ -1,33 +1,27 @@
-import { FC } from 'react'
-import { withStyles, WithStyles } from "@mui/styles";
 import { useNavigate } from "react-router-dom";
-import styles from '../styles/StartScreenStyles'
+import { StyledRootDiv } from '../styles/StartScreenStyles'
 
 
-interface Props extends WithStyles<typeof styles> { };
-
-const StartScreen: FC<Props> = ({ classes }) => {
+const StartScreen = () => {
 
     let navigate = useNavigate();
     const handleEndOfAnimation = () => navigate('/game')
 
     return (
-        <div className={classes.root}>
-            <div className={classes.background} />
-            <div className={classes.text1} >
+        <StyledRootDiv className='StartScreen' color='red'>
+            <div className='background' />
+            <div className='text1' >
                 Welcome to the "Guess The Word" game.
             </div>
-            <div className={classes.text2} onAnimationEnd={handleEndOfAnimation}>
+            <div className='text2' onAnimationEnd={handleEndOfAnimation}>
                 The game is about to start now!
             </div>
-            <div className={classes.loaderContainer}>
-                <div className={classes.loaderTitle}>Guess The Word</div>
-                <div className={classes.loader}>
-                    <div />
-                </div>
+            <div className='loaderContainer'>
+                <div className='loaderTitle'>Guess The Word</div>
+                <div className='loader'><div /></div>
             </div>
-        </div>
+        </StyledRootDiv>
     )
 }
 
-export default withStyles(styles)(StartScreen);
+export default StartScreen;

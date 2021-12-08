@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 
 const TabPanel: FC<{ value: number, index: number }> = ({ children, value, index }) => (
     <div

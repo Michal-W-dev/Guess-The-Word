@@ -1,11 +1,10 @@
-import { createStyles } from '@material-ui/core';
+import { styled } from '@mui/material/styles';
 import sizes from './sizes'
 
-const styles = () => createStyles({
-    root: {
-        marginTop: '2.5rem',
-    },
-    button: {
+
+// Styles
+export const StyledRootDiv = styled('div')({
+    '.button': {
         fontSize: '2.2rem',
         width: '5.7rem',
         height: '4.7rem',
@@ -41,7 +40,7 @@ const styles = () => createStyles({
             textShadow: '2px 2px #1f36b4, 2px 2px 2px aqua, 2px 2px 12px aqua',
         }
     },
-    answer: {
+    '.answer': {
         position: 'absolute',
         left: 0,
         right: 0,
@@ -69,5 +68,3 @@ const styles = () => createStyles({
         },
     },
 })
-
-export default styles;

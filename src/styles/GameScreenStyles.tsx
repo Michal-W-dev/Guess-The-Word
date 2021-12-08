@@ -1,11 +1,11 @@
-import { createStyles } from '@material-ui/core';
+import { styled } from '@mui/material/styles';
 import sizes from './sizes'
 
-const styles = () => createStyles({
-    root: {
+export const StyledRootDiv = styled('div')({
+    '.root': {
         margin: '0 auto',
     },
-    mainContainer: {
+    '.mainContainer': {
         borderRadius: '25px',
         boxShadow: '4px 4px 6px 2px black',
         border: '2px solid white',
@@ -19,6 +19,7 @@ const styles = () => createStyles({
         '& .centeredSection': {
             textAlign: 'center',
             maxWidth: '75rem',
+            marginTop: '2.5rem',
             marginBottom: '2rem',
             '& br': {
                 [sizes.down('xs')]: { display: 'none' },
@@ -33,7 +34,7 @@ const styles = () => createStyles({
             }
         }
     },
-    headerContainer: {
+    '.headerContainer': {
         backgroundColor: 'rgba(0, 0, 0, 0.2)',
         width: '100%',
         height: '7rem',
@@ -52,7 +53,7 @@ const styles = () => createStyles({
             textAlign: 'right',
             fontSize: '2.5rem',
             color: 'hsl(210, 100%, 80%)',
-            '& span:first-child': {
+            svg: {
                 [sizes.down('xs')]: { display: 'none' },
             },
             '& span:last-child': {
@@ -65,7 +66,7 @@ const styles = () => createStyles({
             boxShadow: 'inset 1px 1px 4px black, inset 0 0 1px 2px white',
         },
     },
-    main: {
+    '.main': {
         [sizes.up('md')]: {
             boxShadow: 'inset 1px 1px 4px black, inset 0 -1px 1px 2px white',
         },
@@ -102,7 +103,7 @@ const styles = () => createStyles({
             boxShadow: 'inset 0 1px 1px white',
         }
     },
-    textField: {
+    '.textField': {
         '& label.Mui-focused': {
             color: 'hsl(210, 100%, 90%)',
         },
@@ -121,7 +122,7 @@ const styles = () => createStyles({
         },
     },
 
-    buttonsContainer: {
+    '.buttonsContainer': {
         maxWidth: '75rem',
         textAlign: 'center',
         '& .btn-next': {
@@ -159,7 +160,7 @@ const styles = () => createStyles({
             },
         },
     },
-    message: {
+    '.message': {
         padding: '10px',
         marginBottom: '0.5rem',
         '& span': { fontStyle: 'italic' },
@@ -184,12 +185,10 @@ const styles = () => createStyles({
             }
         }
     },
-    definitionsAtEndGame: {
+    '.definitionsAtEndGame': {
         marginTop: '3rem',
         '& > p': {
             fontWeight: 400
         }
     }
 })
-
-export default styles;

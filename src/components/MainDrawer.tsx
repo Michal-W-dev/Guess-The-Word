@@ -1,9 +1,16 @@
-import React, { FC, useState, useContext } from 'react';
+import { FC, useState, useContext } from 'react';
 import { OptionsContext } from '../context/options.context';
-import clsx from 'clsx';
-import { withStyles, WithStyles, useTheme } from '@material-ui/core/styles';
-import Drawer from '@mui/material/Drawer';
-import AppBar from '@mui/material/AppBar';
+import FaceIcon from '@mui/icons-material/Face';
+import Icon7 from '@mui/icons-material/Filter7Outlined';
+import Icon6 from '@mui/icons-material/Looks6Outlined';
+import Icon5 from '@mui/icons-material/Looks5Outlined';
+import Icon4 from '@mui/icons-material/Looks4Outlined';
+import Icon3 from '@mui/icons-material/Looks3Outlined';
+import Icon2 from '@mui/icons-material/LooksTwoOutlined';
+import Icon1 from '@mui/icons-material/LooksOneOutlined';
+import Form from './Form'
+import { AppBar, Drawer, DrawerHeader, StyledRootDiv } from '../styles/MainDrawerStyles'
+import { useTheme } from '@mui/material/styles';
 import Toolbar from '@mui/material/Toolbar';
 import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
@@ -14,22 +21,12 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import FaceIcon from '@mui/icons-material/Face';
-import Icon7 from '@mui/icons-material/Filter7Outlined';
-import Icon6 from '@mui/icons-material/Looks6Outlined';
-import Icon5 from '@mui/icons-material/Looks5Outlined';
-import Icon4 from '@mui/icons-material/Looks4Outlined';
-import Icon3 from '@mui/icons-material/Looks3Outlined';
-import Icon2 from '@mui/icons-material/LooksTwoOutlined';
-import Icon1 from '@mui/icons-material/LooksOneOutlined';
-import Form from './Form'
-import styles from '../styles/MainDrawerStyles'
 
 
-interface Props extends WithStyles<typeof styles> { };
 interface ShowingForm { show?: boolean, tabIndex: number };
 
-const MainDrawer: FC<Props> = ({ classes, children }) => {
+
+const MainDrawer: FC = ({ children }) => {
     const theme = useTheme();
     const { maxWrong, name } = useContext(OptionsContext)
 
@@ -51,69 +48,51 @@ const MainDrawer: FC<Props> = ({ classes, children }) => {
     )
 
     return (
-        <div className={classes.root}>
+        <StyledRootDiv className='root'>
             <Form
                 showForm={showForm}
-                // changeDifficulty={changeMaxWrong}
                 closeForm={handleShowingForm}
             />
-            <AppBar
-                position="fixed"
-                className={clsx(classes.appBar, open && classes.appBarShift)}
-            >
+            <AppBar position="fixed" open={open} >
                 <Toolbar>
                     <IconButton
                         color="inherit"
                         aria-label="open drawer"
                         onClick={handleDrawerOpen}
                         edge="start"
-                        className={clsx(classes.menuButton, open && classes.hide)}
-                    >
-                        <MenuIcon />
+                        sx={{ marginRight: '36px', ...(open && { display: 'none' }) }}
+                    ><MenuIcon />
                     </IconButton>
                     <p className='player-name'> Player: <span>{name}</span> </p>
                 </Toolbar>
             </AppBar>
-            <Drawer
-                variant="permanent"
-                className={clsx(classes.drawer, {
-                    [classes.drawerOpen]: open,
-                    [classes.drawerClose]: !open,
-                })}
-                classes={{
-                    paper: clsx({
-                        [classes.drawerOpen]: open,
-                        [classes.drawerClose]: !open,
-                    }),
-                }}
-            >
-                <div className={classes.toolbar}>
+            <Drawer variant="permanent" open={open}  >
+                <DrawerHeader>
                     <IconButton onClick={handleDrawerClose}>
                         {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
                     </IconButton>
-                </div>
-                <Divider className={classes.divider} />
-                <List >
-                    <ListItem button className={classes.listItem} onClick={() => handleShowingForm({ show: true, tabIndex: 0 })}>
+                </DrawerHeader>
+                <Divider className='divider' />
+                <List>
+                    <ListItem button className='listItem' onClick={() => handleShowingForm({ show: true, tabIndex: 0 })}>
                         <ListItemIcon><FaceIcon /></ListItemIcon>
                         <ListItemText primary='Player name' />
                     </ListItem>
-                    <ListItem button className={classes.listItem} onClick={() => handleShowingForm({ show: true, tabIndex: 1 })}>
+                    <ListItem button className='listItem' onClick={() => handleShowingForm({ show: true, tabIndex: 1 })}>
                         <ListItemIcon>
                             {renderNumber()}
                         </ListItemIcon>
                         <ListItemText primary='Difficulty' />
                     </ListItem>
-
                 </List>
-                <Divider className={classes.divider} />
+                <Divider className='divider' />
             </Drawer>
-            <main className={classes.content}>
-                <div className={classes.toolbar} />
+            <main className='content'>
+                <div className='toolbar' />
                 {children}
             </main>
-        </div>
+        </StyledRootDiv>
     );
 }
 
-export default withStyles(styles)(MainDrawer)
+export default MainDrawer

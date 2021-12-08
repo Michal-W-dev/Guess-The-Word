@@ -1,12 +1,14 @@
+interface Sizes { [key: string]: string }
+
 const sizes = {
     up(size: string) {
-        const sizes: any = {
+        const sizes: Sizes = {
             md: '800px',
         }
         return `@media (min-width:${sizes[size]})`
     },
     down(size: string) {
-        const sizes: any = {
+        const sizes: Sizes = {
             xs: '540px',
             sm: '650px',
             md: '800px',

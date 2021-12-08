@@ -1,17 +1,16 @@
 import React, { FC, MouseEvent } from 'react'
-import { withStyles, WithStyles } from '@mui/styles'
 import clsx from 'clsx';
-import styles from '../styles/ButtonsStyles'
+import { StyledRootDiv } from '../styles/ButtonsStyles'
 
 
-
-interface Props extends WithStyles<typeof styles> {
+interface Props {
     isWinner: boolean, answer: string, guessed: Set<string>,
-    handleGuess: () => void
+    handleGuess: (evt: MouseEvent) => void
 }
 
+
 const Buttons: FC<Props> = (props) => {
-    const { guessed, handleGuess, classes, answer, isWinner } = props;
+    const { guessed, handleGuess, answer, isWinner } = props;
 
     // Change size of displayed buttons, depending of how long the answer is
     const sizeOfButtons = () => (
@@ -23,10 +22,10 @@ const Buttons: FC<Props> = (props) => {
     // Render animated correct answer (displayed if player guessed all correct letters)
     const renderAnswerWord = () => {
         return (
-            <div className={classes.answer}>
+            <div className='answer'>
                 {answer.split('').map((letter, idx) => (
                     <button
-                        className={clsx(classes.button)}
+                        className='button'
                         key={idx}
                         onClick={handleAnswerClick}
                         style={{
@@ -41,11 +40,11 @@ const Buttons: FC<Props> = (props) => {
     }
 
     return (
-        <div className={classes.root}>
+        <StyledRootDiv className='root'>
             {'qwertyuiopasdfghjkl;zxcvbnm'.split('').map((letter, idx) => (
                 <React.Fragment key={letter}>
                     <button
-                        className={clsx(classes.button, (idx === 13 || idx === 16) && 'btn-fj')}
+                        className={clsx('button', (idx === 13 || idx === 16) && 'btn-fj')}
                         value={letter}
                         onClick={handleGuess}
                         disabled={guessed.has(letter)}
@@ -55,9 +54,8 @@ const Buttons: FC<Props> = (props) => {
                 </React.Fragment>
             ))}
             {isWinner && renderAnswerWord()}
-        </div>
+        </StyledRootDiv>
     )
 }
 
-export default withStyles(styles)(Buttons)
-
+export default Buttons;

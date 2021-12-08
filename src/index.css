@@ -1,12 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400&display=swap');
-*{  
-  margin:0;
-  padding:0;
-  box-sizing:inherit; 
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
 }
 
-html{ 
-  font-size: 10px; 
+html {
+  font-size: 10px;
 }
 
 body {
@@ -23,7 +23,6 @@ code {
     monospace;
 }
 
-
 @keyframes slide {
   0% {
     margin: 0 -40%;
@@ -38,25 +37,25 @@ code {
     opacity: 1
   }
   100% {
-    z-index:0;
+    z-index: 0;
     opacity: 0.05
   }
 }
 
 @media only screen and (min-width: 2200px) {
   html {
-    font-size: 11px; 
+    font-size: 11px;
   }
 }
 
 @media only screen and (max-width: 900px) {
   html {
-    font-size: 9px; 
+    font-size: 9px;
   }
 }
 
 @media only screen and (max-width: 650px) {
   html {
-    font-size: 8px; 
+    font-size: 8px;
   }
 }
