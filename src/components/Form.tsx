@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext, FC, ChangeEvent, MouseEvent, FormEvent } from 'react'
+import { useState, useEffect, useContext, FC, ChangeEvent, MouseEvent, FormEvent, useRef } from 'react'
 import { OptionsContext } from '../context/options.context';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
@@ -9,7 +9,7 @@ import Slider from '@mui/material/Slider';
 import TabPanel from './TabPanel';
 import { StyledRootDiv, StyledDialog } from '../styles/FormStyles';
 
-
+// Marks used in Slider
 const marks = [
     { value: 1, label: '1°' },
     { value: 2, label: '2°' },
@@ -33,9 +33,8 @@ const Form: FC<Props> = ({ showForm, closeForm }) => {
     //Tabs
     const [value, setValue] = useState(0);
     //Forms
-    const [inputText, setInputText] = useState(name)
     const [sliderValue, setSliderValue] = useState(maxWrong)
-
+    const nameInputRef = useRef<HTMLInputElement>(null);
 
     const handleTabChange = (evt: ChangeEvent<{}>, newValue: number) => setValue(newValue)
 
@@ -44,11 +43,10 @@ const Form: FC<Props> = ({ showForm, closeForm }) => {
     const handleSubmit = (evt: FormEvent) => {
         evt.preventDefault()
         closeForm({ tabIndex: value })
-        changeName(inputText)
         changeMaxWrong(sliderValue)
+        const name = nameInputRef.current?.value
+        if (name) changeName(name)
     }
-
-    const handleTextChange = (evt: ChangeEvent<HTMLInputElement>) => setInputText(evt.target.value)
 
     const handleSliderChange = (evt: Event, value: number | number[]) => {
         if (typeof value === 'number') setSliderValue(value)
@@ -83,10 +81,11 @@ const Form: FC<Props> = ({ showForm, closeForm }) => {
                         >
                             <h1 className='formTitle'>Enter your name</h1>
                             <TextField
-                                onChange={handleTextChange}
                                 label="Player name"
-                                inputRef={input => input && input.focus()}
-                                value={inputText}
+                                autoFocus
+                                inputRef={nameInputRef}
+                                // inputRef={input => input && input.focus()}
+                                placeholder={name.trim() ? name : 'Enter you name'}
                             />
                             <div className='btns-container'>
                                 <Button
@@ -121,7 +120,6 @@ const Form: FC<Props> = ({ showForm, closeForm }) => {
                                 max={7}
                                 valueLabelDisplay="auto"
                                 onChange={handleSliderChange}
-                                value={sliderValue}
                                 marks={marks}
                             />
                             <div className='btns-container'>

@@ -9,8 +9,8 @@ interface InitData {
 }
 
 // Get data from local storage
-const storageData: any = JSON.parse(localStorage.getItem('storageData') || '')
-const initData: InitData = storageData || { name: 1, maxWrong: 4 }
+const storageData = JSON.parse(localStorage.getItem('storageData') || '')
+const initData: InitData = storageData || { name: '1', maxWrong: 4 }
 
 
 export const OptionsContext = createContext(initData);
