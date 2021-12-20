@@ -1,6 +1,5 @@
 import { useState, useEffect, useContext, FC, ChangeEvent, MouseEvent, FormEvent, useRef } from 'react'
 import { OptionsContext } from '../context/options.context';
-// import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Paper from '@mui/material/Paper';
 import Tabs from '@mui/material/Tabs';
@@ -98,7 +97,8 @@ const FormModal: FC<Props> = ({ showForm, closeForm }) => {
                             onClick={() => closeForm({ tabIndex: value })}
                         >
                             <Slider
-                                defaultValue={sliderValue}
+                                // defaultValue={3}
+                                value={sliderValue}
                                 aria-labelledby="discrete-slider-custom"
                                 step={1}
                                 min={1}
