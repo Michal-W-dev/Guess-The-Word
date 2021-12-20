@@ -8,7 +8,7 @@ import Icon4 from '@mui/icons-material/Looks4Outlined';
 import Icon3 from '@mui/icons-material/Looks3Outlined';
 import Icon2 from '@mui/icons-material/LooksTwoOutlined';
 import Icon1 from '@mui/icons-material/LooksOneOutlined';
-import Form from './Form'
+import FormModal from './FormModal'
 import { AppBar, Drawer, DrawerHeader, StyledRootDiv } from '../styles/MainDrawerStyles'
 import { useTheme } from '@mui/material/styles';
 import Toolbar from '@mui/material/Toolbar';
@@ -49,7 +49,7 @@ const MainDrawer: FC = ({ children }) => {
 
     return (
         <StyledRootDiv className='root'>
-            <Form
+            <FormModal
                 showForm={showForm}
                 closeForm={handleShowingForm}
             />
