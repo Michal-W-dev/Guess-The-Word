@@ -8,10 +8,10 @@ interface InitData {
     changeMaxWrong: (editedMaxWrong: number) => void
 }
 
-// Get data from local storage
-const storageData = JSON.parse(localStorage.getItem('storageData') || '')
-const initData: InitData = storageData || { name: '1', maxWrong: 4 }
-
+// Unparse Data from Local Storage
+const storageData = localStorage.getItem('storageData')
+// Parse data or set default one
+const initData: InitData = storageData ? JSON.parse(storageData) : { name: '1', maxWrong: 4 }
 
 export const OptionsContext = createContext(initData);
 
