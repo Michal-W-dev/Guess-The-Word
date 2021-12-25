@@ -183,7 +183,7 @@ const GameScreen = () => {
             )
         }
     }
-    console.log('GameScreen ')
+
     // Render definitions at the end of the game (if available)
     const definitions = () => {
         if (def.length > 1 && (isWinner || lostGame)) {
