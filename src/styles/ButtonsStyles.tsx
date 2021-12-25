@@ -3,12 +3,12 @@ import sizes from './sizes'
 
 
 // Styles
-export const StyledRootDiv = styled('div')({
+export const StyledRootDiv = styled('div')(({ theme }) => ({
     '.button': {
         fontSize: '2.2rem',
         width: '5.7rem',
         height: '4.7rem',
-        backgroundColor: '#3f51b5',
+        backgroundColor: theme.palette.primary.main,
         color: 'white',
         borderRadius: '12%',
         outline: 'none',
@@ -67,4 +67,4 @@ export const StyledRootDiv = styled('div')({
             },
         },
     },
-})
+}))

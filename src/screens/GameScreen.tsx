@@ -183,7 +183,7 @@ const GameScreen = () => {
             )
         }
     }
-
+    console.log('GameScreen ')
     // Render definitions at the end of the game (if available)
     const definitions = () => {
         if (def.length > 1 && (isWinner || lostGame)) {
@@ -203,7 +203,7 @@ const GameScreen = () => {
     let capitalizedConstraint = constraint.charAt(0).toUpperCase() + constraint.slice(1);
 
     return (
-        <StyledRootDiv className='root' >
+        <StyledRootDiv className='root'>
             <MainDrawer>
                 {/* Height from useHeightAnimHook. Background from genBackground() */}
                 <div className='mainContainer' style={{ background, height }} >

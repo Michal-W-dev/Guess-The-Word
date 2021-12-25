@@ -58,7 +58,7 @@ export const AppBar = styled(MuiAppBar, {
     },
     [sizes.down('lg')]: { paddingLeft: '1rem' },
     '& button': {
-        [sizes.down('lg')]: { display: 'none' },
+        [sizes.down('xlg')]: { display: 'none' },
     },
     ...(open && {
         marginLeft: drawerWidth,
@@ -72,7 +72,7 @@ export const AppBar = styled(MuiAppBar, {
 }));
 
 
-export const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
+export const Drawer = styled(MuiDrawer, { shouldForwardProp: prop => prop !== 'open' })(
     ({ theme, open }) => ({
         width: drawerWidth,
         flexShrink: 0,
@@ -96,18 +96,18 @@ export const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 
         },
         '& svg': {
             fontSize: '2.7rem',
-            color: 'hsl(189, 100%, 60%)',
+            color: theme.palette.primary.light,
         },
         '& span': {
             fontSize: '2.1rem',
             fontFamily: 'Segoe UI',
             fontWeight: 300,
-            color: 'hsl(189, 100%, 60%)'
+            color: theme.palette.primary.light,
         },
         '& .listItem': {
             '&:hover': {
                 background: 'rgba(0,0,0,.5)',
-                boxShadow: 'inset 2px 0 2px hsl(189, 100%, 60%)'
+                boxShadow: ('inset 1px 0 1px 1px ' + theme.palette.primary.light),
             }
         },
         '& .divider': {
@@ -127,5 +127,5 @@ export const StyledRootDiv = styled('div')({
         width: '75%',
         [sizes.down('xlg')]: { width: '100%', margin: '8% 5%' },
         [sizes.down('md')]: { margin: 0 },
-    },
+    }
 })

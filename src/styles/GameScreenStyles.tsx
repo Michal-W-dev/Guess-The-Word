@@ -1,7 +1,8 @@
 import { styled } from '@mui/material/styles';
 import sizes from './sizes'
 
-export const StyledRootDiv = styled('div')({
+
+export const StyledRootDiv = styled('div')(({ theme }) => ({
     '.root': {
         margin: '0 auto',
     },
@@ -46,13 +47,13 @@ export const StyledRootDiv = styled('div')({
             fontFamily: 'Montserrat, Segoe UI',
             fontSize: '3.3rem',
             fontWeight: 400,
-            color: 'hsl(200, 100%, 75%)',
+            color: theme.palette.primary.light,
             textShadow: '1px 1px black',
         },
         '& p': {
             textAlign: 'right',
             fontSize: '2.5rem',
-            color: 'hsl(210, 100%, 80%)',
+            color: theme.palette.primary.light,
             svg: {
                 [sizes.down('xs')]: { display: 'none' },
             },
@@ -116,8 +117,7 @@ export const StyledRootDiv = styled('div')({
             borderBottomColor: 'rgba(255,255,255,0.9)',
         },
         '& .MuiFilledInput-underline:after': {
-            borderBottom: '2px solid hsl(215, 100%, 60%)',
-            width: '93%',
+            width: '92.5%',
             margin: '0 auto',
         },
     },
@@ -133,7 +133,7 @@ export const StyledRootDiv = styled('div')({
             fontWeight: 100,
             padding: '7px 20px',
             letterSpacing: '2px',
-            backgroundColor: '#3f51b5',
+            backgroundColor: theme.palette.primary.main,
             color: 'white',
             borderRadius: '5px',
             outline: 'none',
@@ -191,4 +191,4 @@ export const StyledRootDiv = styled('div')({
             fontWeight: 400
         }
     }
-})
+}))

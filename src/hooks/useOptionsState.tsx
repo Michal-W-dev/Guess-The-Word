@@ -1,24 +1,24 @@
 import { useState } from 'react';
 
 interface Init {
-    name: string;
-    maxWrong: number;
-}
-
-const useOptionsState = (init: Init): {
     name: string,
     maxWrong: number,
-    changeName: (editedName: string) => void,
-    changeMaxWrong: (editedMaxWrong: number) => void
-} => {
+    colorNumber: number
+}
+
+const useOptionsState = (init: Init) => {
     const [maxWrong, setMaxWrong] = useState(init.maxWrong)
     const [name, setName] = useState(init.name)
+    const [colorNumber, setColorNumber] = useState(init.colorNumber)
 
     return {
         name,
-        changeName: (editedName) => setName(editedName),
+        changeName: (editedName: string) => setName(editedName),
         maxWrong,
-        changeMaxWrong: (editedMaxWrong) => setMaxWrong(editedMaxWrong),
+        changeMaxWrong: (editedMaxWrong: number) => setMaxWrong(editedMaxWrong),
+        colorNumber,
+        changeColor: (editedColor: number) => setColorNumber(editedColor),
+        // col,
     }
 }
 

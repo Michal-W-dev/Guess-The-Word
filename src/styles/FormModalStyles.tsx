@@ -26,8 +26,8 @@ const slideRight = keyframes`
 
 // Styles
 export const StyledDialog = styled(Dialog)`
-    border-top: 2px solid #3f51b5;
-    border-bottom: 2px solid #3f51b5;
+    border-top: 2px solid hsl(var(--num), 48%, 48%);
+    border-bottom: 2px solid hsl(var(--num), 48%, 48%);
     /* Avoid showing scroll at form animation */
     #tabpanel-1 { overflow-x: hidden }
     .tab {
@@ -37,8 +37,8 @@ export const StyledDialog = styled(Dialog)`
 
 export const StyledRootDiv = styled('div')`
     .dialog {
-        border-top: 2px solid #3f51b5;
-        border-bottom: 2px solid #3f51b5;
+        border-top: 2px solid hsl(var(--num), 48%, 48%);
+        border-bottom: 2px solid hsl(var(--num), 48%, 48%);
         /* Avoid showing scroll at form animation */
         #tabpanel-1 { overflow-x: hidden }
         .tab {
@@ -51,15 +51,16 @@ export const StyledRootDiv = styled('div')`
         margin-bottom: 0.9rem
     }
     .form {
-        width: 39rem;
+        width: 50rem;
         height: 17rem;
-        padding: 2rem;
+        padding: 2rem 2.5rem;
         border-radius: 5px;
         input {
-            width: 32rem;
+            width: 33rem;
             font-size: 1.75rem;
             padding: 1.1rem;
             padding-left: 1.5rem;
+            /* margin: 0 auto; */
         }
         label[data-shrink='false'] {
             font-size:14px;
@@ -76,12 +77,22 @@ export const StyledRootDiv = styled('div')`
             }
         }
     }
+    .markColors {
+        font-style: italic;
+        font-size: 1.1rem;
+        &.red {color:red;}
+        &.green {color:green;}
+        &.blue {color:blue;}
+        &.violet {color:darkviolet;}
+        &.pink {color:deeppink;}
+
+    }
     .bottomBorder {
         position: absolute;
         bottom: 0;
         height: 4px;
         width: 100%;
-        background-color: #3f51b5;
+        background-color: hsl(var(--num), 48%, 48%);
     }
     .slideLeft {
         animation: ${slideLeft} .5s

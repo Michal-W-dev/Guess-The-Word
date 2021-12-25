@@ -21,9 +21,10 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
+import FormatPaintIcon from '@mui/icons-material/FormatPaint';
+import Tooltip from '@mui/material/Tooltip';
 
-
-interface ShowingForm { show?: boolean, tabIndex: number };
+interface ShowingForm { show?: boolean, tabIndex: number, resetColor?: number };
 
 
 const MainDrawer: FC = ({ children }) => {
@@ -35,8 +36,11 @@ const MainDrawer: FC = ({ children }) => {
 
     const handleDrawerOpen = () => setOpen(true);
     const handleDrawerClose = () => setOpen(false);
-    const handleShowingForm = ({ show = false, tabIndex }: ShowingForm) => setShowForm({ show, tabIndex })
-
+    const handleShowingForm = ({ show = false, tabIndex, resetColor }: ShowingForm) => {
+        setShowForm({ show, tabIndex })
+        // Reset colors, if form is not saved
+        resetColor && document.body.style.setProperty('--num', resetColor.toString());
+    }
 
     const renderNumber = () => (
         (maxWrong === 7) ? <Icon7 />
@@ -74,17 +78,28 @@ const MainDrawer: FC = ({ children }) => {
                 </DrawerHeader>
                 <Divider className='divider' />
                 <List>
-                    <ListItem button className='listItem' onClick={() => handleShowingForm({ show: true, tabIndex: 0 })}>
-                        <ListItemIcon><FaceIcon /></ListItemIcon>
-                        <ListItemText primary='Player name' />
-                    </ListItem>
-                    <ListItem button className='listItem' onClick={() => handleShowingForm({ show: true, tabIndex: 1 })}>
-                        <ListItemIcon>
-                            {renderNumber()}
-                        </ListItemIcon>
-                        <ListItemText primary='Difficulty' />
-                    </ListItem>
+                    <Tooltip title='Change Player name' placement='right' arrow enterDelay={500}>
+                        <ListItem button className='listItem' onClick={() => handleShowingForm({ show: true, tabIndex: 0 })}>
+                            <ListItemIcon><FaceIcon /></ListItemIcon>
+                            <ListItemText primary='Player name' />
+                        </ListItem>
+                    </Tooltip>
+                    <Tooltip title='Change number of attempts' placement='right' arrow enterDelay={500}>
+                        <ListItem button className='listItem' onClick={() => handleShowingForm({ show: true, tabIndex: 1 })}>
+                            <ListItemIcon>
+                                {renderNumber()}
+                            </ListItemIcon>
+                            <ListItemText primary='Difficulty' />
+                        </ListItem>
+                    </Tooltip>
                 </List>
+                <Divider className='divider' />
+                <Tooltip title='Change colors' placement='right' arrow enterDelay={500}>
+                    <ListItem button className='listItem' onClick={() => handleShowingForm({ show: true, tabIndex: 2 })}>
+                        <ListItemIcon><FormatPaintIcon /></ListItemIcon>
+                        <ListItemText primary='Change colors' />
+                    </ListItem>
+                </Tooltip>
                 <Divider className='divider' />
             </Drawer>
             <main className='content'>

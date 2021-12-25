@@ -25,8 +25,4 @@ const CustomTooltip: FC<Props> = (props) => {
     )
 }
 
-CustomTooltip.defaultProps = {
-    isDisabled: false
-}
-
 export default CustomTooltip;
