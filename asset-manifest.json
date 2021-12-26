@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/Guess-The-Word/static/css/main.701c2fa5.css",
-    "main.js": "/Guess-The-Word/static/js/main.857f6109.js",
+    "main.js": "/Guess-The-Word/static/js/main.fe590671.js",
     "index.html": "/Guess-The-Word/index.html",
     "main.701c2fa5.css.map": "/Guess-The-Word/static/css/main.701c2fa5.css.map",
-    "main.857f6109.js.map": "/Guess-The-Word/static/js/main.857f6109.js.map"
+    "main.fe590671.js.map": "/Guess-The-Word/static/js/main.fe590671.js.map"
   },
   "entrypoints": [
     "static/css/main.701c2fa5.css",
-    "static/js/main.857f6109.js"
+    "static/js/main.fe590671.js"
   ]
 }
