@@ -49,7 +49,7 @@ const FormModal: FC<Props> = ({ showForm, closeForm }) => {
     useEffect(() => { setValue(tabIndex) }, [tabIndex])
     useEffect(() => {
         // Update colors
-        document.body.style.setProperty('--num', formColor.toString());
+        if (formColor) document.body.style.setProperty('--num', formColor.toString());
     }, [colorNumber, formColor])
 
     const handleSubmit = (evt: FormEvent) => {
@@ -69,7 +69,6 @@ const FormModal: FC<Props> = ({ showForm, closeForm }) => {
         if (typeof value === 'number') setFormColor(value)
     }
     const stopPropagation = (evt: MouseEvent<HTMLDivElement>) => evt.stopPropagation();
-
 
     return (
         <div className='Form' onClick={() => closeForm({ tabIndex: value, resetColor: colorNumber })}>
@@ -101,7 +100,7 @@ const FormModal: FC<Props> = ({ showForm, closeForm }) => {
                                 autoFocus
                                 inputRef={nameInputRef}
                                 // inputRef={input => input && input.focus()}
-                                placeholder={name.trim() ? name : 'Enter you name'}
+                                placeholder={name}
                             />
                         </Form>
                         <footer className='bottomBorder' />

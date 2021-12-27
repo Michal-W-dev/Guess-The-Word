@@ -39,7 +39,7 @@ const MainDrawer: FC = ({ children }) => {
     const handleShowingForm = ({ show = false, tabIndex, resetColor }: ShowingForm) => {
         setShowForm({ show, tabIndex })
         // Reset colors, if form is not saved
-        resetColor && document.body.style.setProperty('--num', resetColor.toString());
+        if (resetColor) document.body.style.setProperty('--num', resetColor.toString());
     }
 
     const renderNumber = () => (

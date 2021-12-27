@@ -15,7 +15,8 @@ const useHeightAnimHook = (fetchedData: FetchedData, isWinner: boolean, lostGame
 
     // Update height if (fetchedData, isWinner, lostGame)
     useEffect(() => {
-        setHeight((ref.current as HTMLDivElement).scrollHeight + 70)
+        // setTimeout - fixes issue with not correctly assessing height on refresh at Chrome browser.
+        setTimeout(() => setHeight(ref.current!.scrollHeight + 70), 50)
     }, [fetchedData, isWinner, lostGame])
     return [height, ref]
 }
